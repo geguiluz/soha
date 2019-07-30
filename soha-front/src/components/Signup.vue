@@ -13,6 +13,12 @@
             <v-card-text>
             <v-form>
                 <v-text-field
+                label="Nombre"
+                name="name"
+                type="text"
+                ></v-text-field>
+
+                <v-text-field
                 label="E-mail"
                 name="email"
                 type="text"
@@ -30,7 +36,7 @@
             Already a user? 
             <v-btn color="primary" text >Login</v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="primary">Signup</v-btn>
+            <v-btn color="primary" @click="signupUser">Signup</v-btn>
             </v-card-actions>
         </v-card>
         </v-flex>
@@ -39,7 +45,32 @@
 </template>
 
 <script>
-  export default {
-
-  }
+export default {
+    name: "signup",
+    data() {
+        return {
+                name: "",
+                email: "",
+                password: ""
+        };
+    },
+    methods: {
+        signupUser(){
+          console.log('Signing up user', this.name, this.email, this.password);
+            fetch("http://localhost:3000/signup",{
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify({name: this.name, email: this.email, password: this.password})
+            })
+                .then(data => {
+                    alert('Todo se guardó bien', data.text)
+                })
+                .catch(err => alert("Error garrafal", err))
+        }
+    }
+}
 </script>
+
