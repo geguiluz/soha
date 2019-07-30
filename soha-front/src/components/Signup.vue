@@ -68,7 +68,14 @@ export default {
                 .then(data => {
                     alert('Todo se guardó bien', data.text)
                 })
-                .catch(err => alert("Error garrafal", err))
+                .catch(error => {
+                    if (!error.response) {
+                    // network error
+                    this.errorStatus = 'Error: Network Error';
+                    } else {
+                        this.errorStatus = error.response.data.message;
+                    }
+                })
         }
     }
 }
