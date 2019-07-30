@@ -21,10 +21,6 @@
           </transition-group>
       </draggable>
     </v-card>
-
-    <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
-
-    <rawDisplayer class="col-3" :value="list2" title="List 2" /> -->
   </div>
 </template>
 <script>
@@ -53,17 +49,6 @@ export default {
     };
   },
   methods: {
-    add: function() {
-      this.list.push({ name: "Juan" });
-    },
-    replace: function() {
-      this.list = [{ name: "Edgard" }];
-    },
-    clone: function(el) {
-      return {
-        name: el.name + " cloned"
-      };
-    },
     log: function(evt) {
       window.console.log(evt);
     }
