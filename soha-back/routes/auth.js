@@ -10,15 +10,16 @@ router.get('/home', (req, res) => {
         msg: 'Estás en la página principal'
     })
 });
-
+//Esta vista te debe de direccionar al login/signup
 
 
 router.post('/signup', (req, res) =>{
     const datosUsuario = req.body
     const email        = datosUsuario.email
 
+
     if(datosUsuario.name === '' || datosUsuario.email === '' || datosUsuario.password === ''){
-        return res.json({msg:'campos vacios'})
+        return res.json({msg:'Tienes que agregar username, mail y password'})
     }
 
     User.findOne({email})
@@ -40,7 +41,7 @@ router.post('/signup', (req, res) =>{
         })
         .catch(err => console.log(err));
 })
-
+//Por que cuando se hace el signUp se crea una secion?
 
 
 
@@ -65,6 +66,10 @@ router.post('/login', (req, res) => {
     })
 });
 
+
+
+//Me falta hacer el delete y el update del usuario.
+//Si tiene acceso que se dirija a a que crear un proyecto/empresa??
 
 module.exports = router;
 
