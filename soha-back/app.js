@@ -7,15 +7,15 @@ const mongoose      = require('mongoose');
 const session       = require("express-session");
 const MongoStore    = require("connect-mongo")(session);
 const cors          = require('cors')
-const passport      = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const logger        = require('morgan');
 const path          = require('path');
-
+const app           = express();
+// const passport      = require("passport");
+// const LocalStrategy = require("passport-local").Strategy;
 
 //ROUTES
-const auth     = require('./routes/auth');
-const company = require('./routes/company') 
+const auth = require('./routes/auth');
+const task = require('./routes/Task')
 
 // CONNECTION TO MONGO 
 mongoose.connect("mongodb://localhost:27017/soha-database",{ useNewUrlParser: true })
@@ -27,19 +27,26 @@ mongoose.connect("mongodb://localhost:27017/soha-database",{ useNewUrlParser: tr
   const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 
 
-  const app = express();
 
 // MIDDLEWARES
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors())
 
 app.use(require('node-sass-middleware')({
   src:  path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   sourceMap: true
 }));
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  next();
+});
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -56,49 +63,45 @@ app.use(session({
     })
     }));
 
-// HERE STARTS WHIT PASSPORT
-app.use(session({
-  secret: "our-passport-local-strategy-app",
-  resave: true,
-  saveUninitialized: true
-  }));
+// // HERE STARTS WHIT PASSPORT
+// app.use(session({
+//   secret: "our-passport-local-strategy-app",
+//   resave: true,
+//   saveUninitialized: true
+//   }));
 
 
-  passport.serializeUser((user, cb) => {
-    cb(null, user._id);
-  });
+//   passport.serializeUser((user, cb) => {
+//     cb(null, user._id);
+//   });
   
-  passport.deserializeUser((id, cb) => {
-    User.findById(id, (err, user) => {
-      if (err) { return cb(err); }
-      cb(null, user);
-    });
-  });
+//   passport.deserializeUser((id, cb) => {
+//     User.findById(id, (err, user) => {
+//       if (err) { return cb(err); }
+//       cb(null, user);
+//     });
+//   });
   
-  passport.use(new LocalStrategy((username, password, next) => {
-    User.findOne({ username }, (err, user) => {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        return next(null, false, { message: "Incorrect username" });
-      }
-      if (!bcrypt.compareSync(password, user.password)) {
-        return next(null, false, { message: "Incorrect password" });
-      }
+//   passport.use(new LocalStrategy((username, password, next) => {
+//     User.findOne({ username }, (err, user) => {
+//       if (err) {
+//         return next(err);
+//       }
+//       if (!user) {
+//         return next(null, false, { message: "Incorrect username" });
+//       }
+//       if (!bcrypt.compareSync(password, user.password)) {
+//         return next(null, false, { message: "Incorrect password" });
+//       }
   
-      return next(null, user);
-    });
-  }));
+//       return next(null, user);
+//     });
+//   }));
 
 
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-
-app.use(cors())
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 
 //setings 
@@ -106,7 +109,7 @@ app.set('PORT', 3000);
 
 //Routes
 app.use("/", auth);
-app.use('/', company)
+app.use("/", task)
 
 app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuchas?
   console.log(`server on PORT: ${app.get("PORT")}`);

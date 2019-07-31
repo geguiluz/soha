@@ -14,10 +14,18 @@ router.get('/home', (req, res) => {
 //Esta vista te debe de direccionar al login/signup
 
 
+
+router.get('/userView', ( req,res,next ) => {
+    User.find().then(data => res.status(200).json(data))
+    .catch(err => console.log(err))
+})
+
+
+
+
 router.post('/signup', (req, res) =>{
     const datosUsuario = req.body
     const email        = datosUsuario.email
-
 
     if(datosUsuario.name === '' || datosUsuario.email === '' || datosUsuario.password === ''){
         return res.json({msg:'Tienes que agregar username, mail y password'})
@@ -60,13 +68,20 @@ router.post('/login', (req, res) => {
         }
         if (bcrypt.compareSync(password, user.password)) {
             req.session.currentUser = user;
-            res.redirect("/home");
+            res.json({msg: 'oktl'});
         } else {
             return res.json({msg: 'Las contraseñas no son iguales'});
         }
     })
 });
 
+
+router.get("/logout", (req, res, next) => {
+    req.session.destroy((err) => {
+      // cannot access session here
+      res.jsonp({msg:'see u'});
+    });
+  });
 
 
 //Me falta hacer el delete y el update del usuario.
