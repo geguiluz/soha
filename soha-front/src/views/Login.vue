@@ -7,18 +7,11 @@
         <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
             <v-toolbar dark flat>
-                <v-toolbar-title>Signup</v-toolbar-title>
+                <v-toolbar-title>Login</v-toolbar-title>
                 <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text>
             <v-form>
-                <v-text-field
-                label="Nombre"
-                name="name"
-                type="text"
-                autofocus
-                v-model="name"
-                ></v-text-field>
 
                 <v-text-field
                 label="E-mail"
@@ -36,10 +29,10 @@
             </v-form>
             </v-card-text>
             <v-card-actions>            
-            Already a user? 
-            <v-btn to="/login" color="primary" text >Login</v-btn>
+            Not a user? 
+            <v-btn to="/signup" color="primary" text >Signup</v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="signupUser">Signup</v-btn>
+            <v-btn color="primary" @click="loginUser">Login</v-btn>
             </v-card-actions>
         </v-card>
         </v-flex>
@@ -49,10 +42,9 @@
 
 <script>
 export default {
-    name: "signup",
+    name: "login",
     data() {
         return {
-                name: "",
                 email: "",
                 password: ""
         };
@@ -66,21 +58,20 @@ export default {
         })
     },
     methods: {
-        signupUser(){
-          console.log('Signing up user', this.name, this.email, this.password);
-            fetch("http://localhost:3000/signup",{
+        loginUser(){
+          console.log('Logging in user', this.email, this.password);
+            fetch("http://localhost:3000/login",{
                 headers:{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 method: "POST",
-                body: JSON.stringify({name: this.name, email: this.email, password: this.password})
+                body: JSON.stringify({ email: this.email, password: this.password })
             })
                 .then(data => {
-                    this.name = '';
                     this.password = '';
                     this.email = '';
-                    alert('Usuario registrado correctamente', data.text)
+                    alert('Usuario loggeado correctamente', data.text)
                 })
                 .catch(error => {
                     if (!error.response) {
