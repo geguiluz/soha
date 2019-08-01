@@ -71,6 +71,7 @@ router.post('/login', (req, res) => {
         } else {
             return res.json({msg: 'Las contraseñas no son iguales'});
         }
+        return true
     })
 });
 

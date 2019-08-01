@@ -5,8 +5,7 @@ const listSchema = new Schema({
     listName:   String,
     listItems: [ {type: Schema.Types.ObjectId, ref: "Task"} ],
     user:       String,
-    role:       Number,
-    profilePic: String
+
 },{
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });
