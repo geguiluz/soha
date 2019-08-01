@@ -5,9 +5,15 @@ const User     = require('./User')
 
 const companytSchema = new Schema({
     name:         String,
-    createdBy:    String,
+    createdBy:    {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     longDesc:     String,
-    participants: [String], 
+    participants: [[{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]], 
     tasks:        [String]
 },{
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

@@ -14,14 +14,17 @@ const app           = express();
 // const LocalStrategy = require("passport-local").Strategy;
 
 //ROUTES
-const auth = require('./routes/auth');
-const task = require('./routes/Task')
+const auth           = require('./routes/auth');
+const task           = require('./routes/Task')
+const dashboardTasks = require('./routes/dashboardTasks')
 
 // CONNECTION TO MONGO 
-mongoose.connect("mongodb://localhost:27017/soha-database",{ useNewUrlParser: true })
+mongoose.connect("mongodb+srv://ADMIN:1234@cluster0-hbugd.mongodb.net/test?retryWrites=true&w=majority",{ useNewUrlParser: true })
   .then(x => {console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`);
   })
   .catch(err => {console.error("Error connecting to mongo", err);});
+
+
 
   const app_name = require('./package.json').name;
   const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
@@ -110,6 +113,7 @@ app.set('PORT', 3000);
 //Routes
 app.use("/", auth);
 app.use("/", task)
+app.use('/', dashboardTasks)
 
 app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuchas?
   console.log(`server on PORT: ${app.get("PORT")}`);

@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
-const User     = require('./User')
-const Company  = require('./Company')
 
 const taskSchema = new Schema({
     company:      String,
     name:         String,
     longDesc:     String,
-    createdBy:    String,
-    assignedTo:   [String],
-    completed:    [Number],
+    createdBy:    {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    assignedTo:   [[{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]],
+    completed:    [Boolean],
     dueDate:      String,
     startedDate:  String,
     finishedDate: String,

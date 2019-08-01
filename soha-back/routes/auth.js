@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser   = require('body-parser');
 const router  = express.Router();
 const bcrypt  = require('bcryptjs');
 const User    = require('../models/User');
@@ -78,8 +77,7 @@ router.post('/login', (req, res) => {
 
 router.get("/logout", (req, res, next) => {
     req.session.destroy((err) => {
-      // cannot access session here
-      res.jsonp({msg:'see u'});
+      res.json({msg:'see u'});
     });
   });
 
