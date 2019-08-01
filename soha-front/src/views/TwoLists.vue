@@ -4,7 +4,7 @@
     fluid
     fill-height
     >
-      <v-layout align-center justify-center>
+      <v-layout justify-center>
         <v-card max-width="344" class="mx-auto" :id="element.id" v-for="(element) in allLists" :key="element.id">
           <v-card-title>{{ element.listTitle }}</v-card-title>
           <draggable class="list-group" :list="element.listItems" group="TaskList" @change="log" ghost-class="ghost">
