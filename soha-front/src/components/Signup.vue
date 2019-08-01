@@ -16,6 +16,7 @@
                 label="Nombre"
                 name="name"
                 type="text"
+                prepend-icon="person"                
                 autofocus
                 v-model="name"
                 ></v-text-field>
@@ -24,6 +25,7 @@
                 label="E-mail"
                 name="email"
                 type="text"
+                prepend-icon="email"
                 v-model="email"
                 ></v-text-field>
                 <v-text-field
@@ -31,6 +33,7 @@
                 label="Password"
                 name="password"
                 type="password"
+                prepend-icon="lock"
                 v-model="password"
                 ></v-text-field>
             </v-form>
