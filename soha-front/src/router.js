@@ -20,6 +20,30 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './components/Signup.vue')
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/UserDashboard.vue')
+    },
+    {
+      path: '/draggableLists',
+      name: 'DragabbleLists',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './components/DraggableLists.vue')
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/Login.vue')
     }
   ]
 })
