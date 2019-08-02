@@ -23,8 +23,8 @@
 import draggable from 'vuedraggable';
 
 export default {
-  name: "two-lists",
-  display: "Two Lists",
+  name: "DraggableLists",
+  display: "Draggable Lists",
   order: 1,
   components: {
     draggable

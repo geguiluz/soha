@@ -1,23 +1,17 @@
 <template>
     <div>
-        <h3>
-        This is the Dashboard page
-        </h3>
-        <TaskList listType = 'misTareas'/>
-        <!-- <TaskList listType = 'meDeben'/>
-        <TaskList /> -->
+        <DraggableLists/>
     </div>
 </template>
 
 <script>
 
-import Signup from '../components/Signup';
-import TaskList from '../components/TaskList';
+// import Signup from '../components/Signup';
+import DraggableLists from '../components/DraggableLists';
 
 export default {
     components: {
-    Signup,
-    TaskList,
+    DraggableLists,
   },
 }
 </script>
