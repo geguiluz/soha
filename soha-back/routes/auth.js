@@ -58,20 +58,20 @@ router.post('/login', (req, res) => {
     const {password, email} = req.body;
 
     if (email === "" || password === "") {
-        res.json({msg:'Ambos campos son necesarios!!'});
+        // Campos vacíos
+        return res.status(409).json({msg: "Faltan campos"})
     }
     User.findOne({email})
     .then(user => {
         if (!user) {
-            return res.json({msg: 'No existe ese usuario'});
+            return res.status(401).json({msg: "No existe usuario"})
         }
         if (bcrypt.compareSync(password, user.password)) {
             req.session.currentUser = user;
-            res.json({msg: 'oktl'});
+            res.status(200).json({msg: 'Login exitoso'});
         } else {
-            return res.json({msg: 'Las contraseñas no son iguales'});
+            return res.status(401).json({msg: 'Login fallido'});
         }
-        return true
     })
 });
 

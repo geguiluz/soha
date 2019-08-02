@@ -53,7 +53,7 @@ export default {
         let self = this
         window.addEventListener('keyup', function (event) {
         if (event.keyCode === 13) {
-            self.signupUser()
+            self.loginUser()
         }
         })
     },
@@ -71,7 +71,11 @@ export default {
                 .then(data => {
                     this.password = '';
                     this.email = '';
-                    alert('Usuario loggeado correctamente', data.text)
+                    console.log('Fetch passed. Response from API. Status:', data.status)
+                    if(data.status === 200) {
+                        // Redirect user to Dashboard if login is successful.
+                        this.$router.push({ name: 'Dashboard', query: { redirect: '/dashboard' } });
+                    }
                 })
                 .catch(error => {
                     if (!error.response) {
