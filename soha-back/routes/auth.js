@@ -67,7 +67,7 @@ router.post('/login', (req, res) => {
         }
         if (bcrypt.compareSync(password, user.password)) {
             req.session.currentUser = user;
-            res.json({msg: 'oktl'});
+            res.json({ user })
         } else {
             return res.json({msg: 'Las contraseñas no son iguales'});
         }

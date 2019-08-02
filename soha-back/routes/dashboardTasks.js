@@ -16,7 +16,7 @@ router.post('/dashboardTasks', (req, res) => {
 
 router.get('/dashboardTasks', (req, res) => {
     listSchema.find()
-    .populate('listSchema', {listName: 1, _id: 0, tasks: 1 })
+    .populate('listSchema', {listName: 1, _id: 0, listName: 1 })
     .then(post => {
         res.status(200).json(post)
     })

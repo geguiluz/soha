@@ -9,15 +9,15 @@ const taskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    assignedTo:   [[{
+    assignedTo:   [{
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }]],
-    completed:    [Boolean],
-    dueDate:      String,
-    startedDate:  String,
-    finishedDate: String,
-    coments:      String
+    }],
+    completed:    Boolean,
+    dueDate:      Date,
+    startedDate:  Date,
+    finishedDate: Date,
+    comments:     String
 },{
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });
