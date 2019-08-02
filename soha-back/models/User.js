@@ -6,7 +6,13 @@ const userSchema = new Schema({
     email:      String,
     password:   String,
     role:       Number,
-    profilePic: String
+    profilePic: String,
+    
+    taskAssig: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
+    
 },{
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });

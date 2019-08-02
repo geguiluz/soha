@@ -3,8 +3,10 @@ const Task    = require("../models/Task");
 
 const router = express.Router();
 
-router.get('/:id/taskView', ( req,res,next ) => {
-    Task.find().then(data => res.status(200).json(data))
+router.get('/:id/myTasks', ( req,res,next ) => {
+    let { id } = req.params;
+
+    Task.find({createdBy:id}).then(data => res.status(200).json(data))
     .catch(err => console.log(err))
 })
 
@@ -24,4 +26,10 @@ router.post('/:id/addTask', (req, res) => {
 })
 
 
+router.get('/myTask', (req,res,) => {
+    tas
+})
+
+
 module.exports = router;
+
