@@ -5,16 +5,56 @@
     fill-height
     >
       <v-layout justify-center>
-        <v-card outlined width='500' max-width="344" class="mx-auto" :id="element.id" v-for="(element) in allLists" :key="element.id">
-          <v-card-title>{{ element.listTitle }}</v-card-title>
-          <draggable class="list-group" :list="element.listItems" group="TaskList" @change="log" ghost-class="ghost">
-              <transition-group type = "transition" name="flip-list">
-                <div class="sortable" :id="element.id" v-for="(element) in element.listItems" :key="element.name">
-                  <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
-                </div>
-              </transition-group>
-          </draggable>
+        <v-card outlined width='500' max-width="344" class="mx-auto">
+          <v-layout justify-end>
+          <v-btn class="mx-2" fab small dark color="green" @click="addTask">
+            <v-icon dark>add</v-icon>
+          </v-btn>
+          </v-layout>
+          <v-card-title class="dark-color">
+            {{ allLists[0].listTitle }}
+          </v-card-title>
+          <v-card-text>
+            <v-text-field v-if="allLists[0].addTaskFlg" 
+            label="Escribe una tarea nueva" 
+            name="newTask" 
+            type="text" 
+            v-model="allLists[0].newTask"
+            @keyup.enter="saveTask"
+            :autofocus="allLists[0].addTaskFlg"
+            >
+            </v-text-field>
+            <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
+                <transition-group type = "transition" name="flip-list">
+                  <div class="sortable" :id="element.id" v-for="(element) in allLists[0].listItems" :key="element.name">
+                    <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
+                  </div>
+                </transition-group>
+            </draggable>
+          </v-card-text>
         </v-card>
+        <v-card outlined width='500' max-width="344" class="mx-auto">
+          <v-layout justify-end>
+          <v-btn class="mx-2" fab small dark color="primary" >
+            <v-icon dark>add</v-icon>
+          </v-btn>
+          </v-layout>
+          <v-card-title class="dark-color">
+            {{ allLists[1].listTitle }}
+          </v-card-title>
+          <v-card-text>
+            <v-text-field v-if="allLists[1].addTaskFlg" label="Escribe una tarea nueva" name="newTask" type="text" v-model="newTask">
+            </v-text-field>
+            <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
+                <transition-group type = "transition" name="flip-list">
+                  <div class="sortable" :id="element.id" v-for="(element) in allLists[1].listItems" :key="element.name">
+                    <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
+                  </div>
+                </transition-group>
+            </draggable>
+          </v-card-text>
+        </v-card>
+        
         <v-card outlined  max-width="344" class="mx-auto" >
             <v-card-title>KPI's</v-card-title>
             <v-card-text>
@@ -44,6 +84,8 @@ export default {
     return {
       allLists: [{
         listTitle: "Mis Tareas",
+        addTaskFlg: false,
+        newTask: '',
         listItems: [
           { name: "Primera tarea", id: 1, completed: false },
           { name: "Segunda Tarea", id: 2, completed: true },
@@ -70,12 +112,29 @@ export default {
   methods: {
     log: function(evt) {
       window.console.log(evt);
+    },
+    addTask() {
+      this.allLists[0].addTaskFlg = true 
+      console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+      // TODO: Set focus on newTask field
+    },
+    saveTask() {
+      this.allLists[0].addTaskFlg = false 
+      console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+      // TODO: Push task to task array
+      this.allLists[0].listItems.push({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+      this.allLists[0].newTask = ''
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
+
+.dark-color {
+  background-color: black;
+  color: whitesmoke;
+}
 
 span {
   font-size: 1.1rem;
