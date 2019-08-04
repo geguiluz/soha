@@ -19,12 +19,22 @@ router.get('/userView', ( req,res,next ) => {
     .catch(err => console.log(err))
 })
 
+// router.get("/:id/user", (res, req) => {     
+// const {id} = req.params
+//     User.find({user: id})
+//     .then(data => {
+//         res.json(data)
+//     })
+//     .catch(err => console.log(err))         
+// })
 
 
 
 router.post('/signup', (req, res) =>{
     const datosUsuario = req.body
     const email        = datosUsuario.email
+    // const userId = req.session.currentUser._id;
+    
 
     if(datosUsuario.name === '' || datosUsuario.email === '' || datosUsuario.password === ''){
         return res.json({msg:'Tienes que agregar username, mail y password'})

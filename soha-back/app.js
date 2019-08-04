@@ -15,7 +15,6 @@ const app           = express();
 //ROUTES
 const auth           = require('./routes/auth');
 const task           = require('./routes/Task')
-const dashboardTasks = require('./routes/dashboardTasks')
 
 // CONNECTION TO MONGO 
 mongoose.connect("mongodb+srv://ADMIN:1234@cluster0-hbugd.mongodb.net/test?retryWrites=true&w=majority",{ useNewUrlParser: true })
@@ -72,7 +71,6 @@ app.set('PORT', 3000);
 //Routes
 app.use("/", auth);
 app.use("/", task)
-app.use('/', dashboardTasks)
 
 app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuchas?
   console.log(`server on PORT: ${app.get("PORT")}`);
