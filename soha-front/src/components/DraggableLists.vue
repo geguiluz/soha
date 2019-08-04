@@ -22,20 +22,24 @@
             v-model="allLists[0].newTask"
             @keyup.enter="saveTask"
             :autofocus="allLists[0].addTaskFlg"
+            hint="Para agregarla a la lista, sólo da enter"
             >
             </v-text-field>
-            <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
-                <transition-group type = "transition" name="flip-list">
-                  <div class="sortable" :id="element.id" v-for="(element) in allLists[0].listItems" :key="element.name">
-                    <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
-                  </div>
-                </transition-group>
-            </draggable>
+            <v-list-item-group>
+              <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
+                  <transition-group type = "transition" name="flip-list">
+                    <v-list-item :id="element.id" v-for="(element) in allLists[0].listItems" :key="element.name">
+                        <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
+                    </v-list-item>
+                  </transition-group>
+              </draggable>
+            </v-list-item-group>
           </v-card-text>
         </v-card>
+
         <v-card outlined width='500' max-width="344" class="mx-auto">
           <v-layout justify-end>
-          <v-btn class="mx-2" fab small dark color="primary" >
+          <v-btn class="mx-2" fab small dark color="green">
             <v-icon dark>add</v-icon>
           </v-btn>
           </v-layout>
@@ -43,15 +47,24 @@
             {{ allLists[1].listTitle }}
           </v-card-title>
           <v-card-text>
-            <v-text-field v-if="allLists[1].addTaskFlg" label="Escribe una tarea nueva" name="newTask" type="text" v-model="newTask">
+            <v-text-field v-if="allLists[1].addTaskFlg" 
+            label="Escribe una tarea nueva" 
+            name="newTask" 
+            type="text" 
+            v-model="allLists[1].newTask"
+            @keyup.enter="saveTask"
+            :autofocus="allLists[1].addTaskFlg"
+            >
             </v-text-field>
-            <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
-                <transition-group type = "transition" name="flip-list">
-                  <div class="sortable" :id="element.id" v-for="(element) in allLists[1].listItems" :key="element.name">
-                    <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
-                  </div>
-                </transition-group>
-            </draggable>
+            <v-list-item-group>
+              <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
+                  <transition-group type = "transition" name="flip-list">
+                    <v-list-item :id="element.id" v-for="(element) in allLists[1].listItems" :key="element.name">
+                        <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
+                    </v-list-item>
+                  </transition-group>
+              </draggable>
+            </v-list-item-group>
           </v-card-text>
         </v-card>
         
@@ -72,6 +85,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable';
+// import axios from "axios";
 
 export default {
   name: "DraggableLists",
@@ -86,6 +100,7 @@ export default {
         listTitle: "Mis Tareas",
         addTaskFlg: false,
         newTask: '',
+        persistentHint: false,
         listItems: [
           { name: "Primera tarea", id: 1, completed: false },
           { name: "Segunda Tarea", id: 2, completed: true },
@@ -122,8 +137,25 @@ export default {
       this.allLists[0].addTaskFlg = false 
       console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
       // TODO: Push task to task array
-      this.allLists[0].listItems.push({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+      this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
       this.allLists[0].newTask = ''
+      // axios
+      //   .post("http://localhost:3000/"+""+"addTask", {
+      //      name: this.name, 
+      //      completed: false 
+      //   })
+      //   .then(res => {
+      //     this.allLists[0].addTaskFlg = false 
+      //     // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+      //     // Push task to the beginning of task array
+      //     this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+      //     this.allLists[0].newTask = ''
+      //   })
+      //   .catch(err => {
+      //     alert(
+      //       "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
+      //     );
+      //   });
     }
   }
 };
@@ -156,12 +188,12 @@ strong {
 .sortable {
   width: 100%;
   background: white;
-  padding: 1em;
-  cursor: move;
-  margin-bottom: 2px;
-  &:hover {
-    background: lightgray;
-  }
+  // padding: 1em;
+  // cursor: move;
+  // margin-bottom: 2px;
+  // &:hover {
+  //   background: lightgray;
+  // }
 
   span {
     float: right;
