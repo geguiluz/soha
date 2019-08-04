@@ -14,6 +14,7 @@
             <v-form>
 
                 <v-text-field
+                autofocus
                 label="E-mail"
                 name="email"
                 type="text"

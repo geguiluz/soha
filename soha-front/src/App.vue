@@ -6,8 +6,8 @@
       
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
+      <v-btn @click="logOut">
+        Logout
       </v-btn>
     </v-app-bar>
 
@@ -47,23 +47,17 @@
           nav
           dense
         >
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon>mdi-folder</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>My Files</v-list-item-title>
+          <v-list-item link to="/dashboard">
+              <v-icon>mdi-view-dashboard</v-icon>
+            <v-list-item-title>Mi Dashboard</v-list-item-title>
           </v-list-item>
           <v-list-item link>
-            <v-list-item-icon>
-              <v-icon>mdi-account-multiple</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Shared with me</v-list-item-title>
+              <v-icon>mdi-calendar-question</v-icon>
+            <v-list-item-title>Planear mi semana</v-list-item-title>
           </v-list-item>
           <v-list-item link>
-            <v-list-item-icon>
-              <v-icon>mdi-star</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Starred</v-list-item-title>
+              <v-icon>mdi-bullseye-arrow</v-icon>
+            <v-list-item-title>Mis Metas</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -91,11 +85,38 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+        logOut(){
+          console.log('Logging out');
+            fetch("http://localhost:3000/logout",{
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "GET",
+            })
+                .then(data => {                
+                    console.log('Fetch passed. Response from API. Status:', data.status)
+                    if(data.status === 200) {
+                        // Redirect user to Dashboard if login is successful.
+                        this.$router.push({ name: 'Dashboard', query: { redirect: '/signup' } });
+                    }
+                })
+                .catch(error => {
+                    if (!error.response) {
+                    // network error
+                    this.errorStatus = 'Error: Network Error';
+                    } else {
+                        this.errorStatus = error.response.data.message;
+                    }
+                })
+        }
+    }
 };
 </script>
 
 <style scoped>
   .router-view-container {
-    margin-left: 6vw;
+    margin-left: 3vw;
   }
 </style>
