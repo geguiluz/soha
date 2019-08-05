@@ -85,7 +85,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable';
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "DraggableLists",
@@ -129,33 +129,40 @@ export default {
       window.console.log(evt);
     },
     addTask() {
+      // This flag helps us setting focus on newTask field and showing the field
+      // itself
       this.allLists[0].addTaskFlg = true 
       console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
-      // TODO: Set focus on newTask field
     },
     saveTask() {
       this.allLists[0].addTaskFlg = false 
       console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
-      // TODO: Push task to task array
-      this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
-      this.allLists[0].newTask = ''
-      // axios
-      //   .post("http://localhost:3000/"+""+"addTask", {
-      //      name: this.name, 
-      //      completed: false 
-      //   })
-      //   .then(res => {
-      //     this.allLists[0].addTaskFlg = false 
-      //     // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
-      //     // Push task to the beginning of task array
-      //     this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
-      //     this.allLists[0].newTask = ''
-      //   })
-      //   .catch(err => {
-      //     alert(
-      //       "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
-      //     );
-      //   });
+      // Push new task to the beginning of task array
+      // this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+      // this.allLists[0].newTask = ''
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      axios
+        .post("http://localhost:3000/"+currentUser+"/addTask", {
+           name: this.allLists[0].newTask, 
+           completed: false 
+        })
+        .then(res => {
+          this.allLists[0].addTaskFlg = false 
+          // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+          // Push task to the beginning of task array
+          this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+          this.allLists[0].newTask = ''
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
+          );
+        });
+    },
+    getMyTasks() {
+
     }
   }
 };

@@ -1,13 +1,11 @@
 const express = require("express");
-const mongoose = require('mongoose');
 const Task    = require("../models/Task");
-const User    = require('../models/User')
-
 
 const router = express.Router();
 
 router.get('/:id/myTasks', ( req,res,next ) => {
     let { id } = req.params;
+
     Task.find( { $or: [ { createdBy:id}, { assignedTo:id } ] })
     .then(data => 
         res.status(200).json(data))
@@ -31,21 +29,22 @@ router.post('/:id/addTask', (req, res) => {
     const { company, name, longDesc, completed, dueDate,
         startedDate, finishedDate, comments, assignedTo} = req.body;
 
+
     const newTask = new Task({createdBy:id, company, name, longDesc, completed, dueDate,
     startedDate, finishedDate, comments, assignedTo})
+
     newTask.save()
-    .then(post => {
-        res.status(200).json(post)
+    .then(comentario => {
+        res.json(comentario)
     })
-        .catch(err => res.status(400).json(err));
-});
+    .catch(err => console.log(err));
+})
+
+
+router.get('/myTask', (req,res,) => {
+    tas
+})
 
 
 module.exports = router;
-
-// const userId = req.session.currentUser._id;
-    
-
-
-
 

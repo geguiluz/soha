@@ -99,7 +99,7 @@ export default {
                     console.log('Fetch passed. Response from API. Status:', data.status)
                     if(data.status === 200) {
                         // Redirect user to Dashboard if login is successful.
-                        this.$router.push({ name: 'Dashboard', query: { redirect: '/signup' } });
+                        this.$router.push({ name: 'Login', query: { redirect: '/login' } });
                     }
                 })
                 .catch(error => {

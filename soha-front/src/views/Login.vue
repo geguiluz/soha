@@ -26,6 +26,7 @@
                 name="password"
                 type="password"
                 v-model="password"
+                @keyup.enter="loginUser"
                 ></v-text-field>
             </v-form>
             </v-card-text>
@@ -51,12 +52,7 @@ export default {
         };
     },
     mounted () {
-        let self = this
-        window.addEventListener('keyup', function (event) {
-        if (event.keyCode === 13) {
-            self.loginUser()
-        }
-        })
+
     },
     methods: {
         loginUser(){
