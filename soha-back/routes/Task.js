@@ -8,10 +8,7 @@ const router = express.Router();
 
 router.get('/:id/myTasks', ( req,res,next ) => {
     let { id } = req.params;
-    // {createdBy:ObjectId('5d447c38d3941c06a2f2475d'), assignedTo:ObjectId('5d447c40d3941c06a2f2475e')}
-
-
-    Task.find({assignedTo:id})
+    Task.find( { $or: [ { createdBy:id}, { assignedTo:id } ] })
     .then(data => 
         res.status(200).json(data))
     .catch(err => console.log(err))
@@ -21,7 +18,8 @@ router.get('/:id/myTasks', ( req,res,next ) => {
 
 router.put("/:id/:idTask/assignUser", (req, res) =>{
     const assign  = req.body.assignedTo
-    const idTask = req.params.idTask
+    const {idTask} = req.params
+
     Task.findByIdAndUpdate({_id: idTask}, {assignedTo:assign}, {new: true})
     .then((task) =>{
             res.json(task)  
@@ -29,7 +27,6 @@ router.put("/:id/:idTask/assignUser", (req, res) =>{
     })
 
 router.post('/:id/addTask', (req, res) => {
-
     const {id}       = req.params;
     const { company, name, longDesc, completed, dueDate,
         startedDate, finishedDate, comments, assignedTo} = req.body;
