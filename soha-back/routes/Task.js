@@ -37,10 +37,11 @@ router.post('/:id/addTask', (req, res) => {
     .catch(err => console.log(err));
 })
 
-router.put('/id/idTask', (req, res) => {
+router.put('/:id/:idTask', (req, res) => {
     const {idTask}  = req.params
     const {completed} = req.body 
 
+    console.log(idTask)
     
     Task.findByIdAndUpdate({_id: idTask}, {completed: completed}, {new: true})
     .then((task) =>{
