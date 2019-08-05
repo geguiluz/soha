@@ -3,6 +3,8 @@ const router  = express.Router();
 const bcrypt  = require('bcryptjs');
 const User    = require('../models/User');
 
+
+
 const bcryptSalt = 10;
 
 router.get('/home', (req, res) => {
@@ -10,24 +12,19 @@ router.get('/home', (req, res) => {
         msg: 'Estás en la página principal'
     })
 });
-//Esta vista te debe de direccionar al login/signup
 
-
-
-router.get('/userView', ( req,res,next ) => {
+//Bring All the users back
+router.get('/userView', ( req,res) => {
     User.find().then(data => res.status(200).json(data))
     .catch(err => console.log(err))
 })
 
-// router.get("/:id/user", (res, req) => {     
-// const {id} = req.params
-//     User.find({user: id})
-//     .then(data => {
-//         res.json(data)
-//     })
-//     .catch(err => console.log(err))         
-// })
-
+//Brinf only one User Back 
+router.get('/:id/user', (req, res) => {     
+    const id =  req.params.id
+    User.find({_id: id}).then(data => res.status(200).json(data))
+    .catch(err => console.log(err))    
+    })
 
 
 router.post('/signup', (req, res) =>{
@@ -91,10 +88,6 @@ router.get("/logout", (req, res, next) => {
       res.json({msg:'see u'});
     });
   });
-
-
-//Me falta hacer el delete y el update del usuario.
-//Si tiene acceso que se dirija a a que crear un proyecto/empresa??
 
 module.exports = router;
 
