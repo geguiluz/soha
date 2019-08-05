@@ -138,9 +138,17 @@ export default {
       this.allLists[0].addTaskFlg = true 
       console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
     },
+    dummySave() {
+      console.log("My Tasks List (Dummy Save)",this.allLists[0].listItems)
+      this.allLists[0].addTaskFlg = false 
+      // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+      // Push task to the beginning of task array
+      this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+      this.allLists[0].newTask = ''
+    },
     saveTask() {
       // this.allLists[0].addTaskFlg = false 
-      console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+      // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
       // Push new task to the beginning of task array
       // this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
       // this.allLists[0].newTask = ''
