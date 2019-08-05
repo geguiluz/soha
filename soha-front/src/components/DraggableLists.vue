@@ -28,7 +28,7 @@
             <v-list-item-group>
               <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <v-list-item :id="element._id" v-for="(element) in allLists[0].listItems" :key="element.name">
+                    <v-list-item :id="element._id" v-for="(element, index) in allLists[0].listItems" :key="index">
                         <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
                     </v-list-item>
                   </transition-group>
@@ -59,7 +59,7 @@
             <v-list-item-group>
               <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <v-list-item :id="element._id" v-for="(element) in allLists[1].listItems" :key="element.name">
+                    <v-list-item :id="element._id" v-for="(element, index) in allLists[1].listItems" :key="index">
                         <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
                     </v-list-item>
                   </transition-group>
@@ -139,7 +139,7 @@ export default {
       console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
     },
     saveTask() {
-      this.allLists[0].addTaskFlg = false 
+      // this.allLists[0].addTaskFlg = false 
       console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
       // Push new task to the beginning of task array
       // this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
@@ -176,7 +176,7 @@ export default {
         .get(url)
         .then(res => {
           this.allLists[0].listItems = res.data
-          // console.log("res.data",res.data)
+          console.log("My Tasks List",this.allLists[0].listItems)
         })
         .catch(err => {
           alert(
