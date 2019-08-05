@@ -28,7 +28,7 @@
             <v-list-item-group>
               <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <v-list-item :id="element.id" v-for="(element) in allLists[0].listItems" :key="element.name">
+                    <v-list-item :id="element._id" v-for="(element) in allLists[0].listItems" :key="element.name">
                         <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
                     </v-list-item>
                   </transition-group>
@@ -59,7 +59,7 @@
             <v-list-item-group>
               <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <v-list-item :id="element.id" v-for="(element) in allLists[1].listItems" :key="element.name">
+                    <v-list-item :id="element._id" v-for="(element) in allLists[1].listItems" :key="element.name">
                         <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
                     </v-list-item>
                   </transition-group>
@@ -102,18 +102,14 @@ export default {
         newTask: '',
         persistentHint: false,
         listItems: [
-          { name: "Primera tarea", id: 1, completed: false },
-          { name: "Segunda Tarea", id: 2, completed: true },
-          { name: "Tercera Tarea", id: 3, completed: false },
-          { name: "Cuarta Tarea", id: 4, completed: false }
         ]
       },
       {
         listTitle: "Tareas Delegadas",
         listItems: [
-          { name: "Quinta Tarea", id: 5, completed: true },
-          { name: "Sexta Tarea", id: 6, completed: true },
-          { name: "Séptima Tarea", id: 7, completed: false }
+          { name: "Quinta Tarea", _id: 5, completed: true },
+          { name: "Sexta Tarea", _id: 6, completed: true },
+          { name: "Séptima Tarea", _id: 7, completed: false }
         ]
       }],
       kpiList: [
@@ -123,6 +119,14 @@ export default {
         
       ]
     };
+  },
+  mounted() {
+    this.getMyTasks()
+  },
+  computed: {
+    updateMyTasks() {
+      this.getMyTasks()
+    }
   },
   methods: {
     log: function(evt) {
@@ -162,7 +166,23 @@ export default {
         });
     },
     getMyTasks() {
+      // Get my tasks from myTasks route, then render them to
+      // this.allLists[0].listItems[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
+      const url = "http://localhost:3000/"+currentUser+"/myTasks"
+      axios
+        .get(url)
+        .then(res => {
+          this.allLists[0].listItems = res.data
+          // console.log("res.data",res.data)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer tu lista de tareas. Inténtalo más tarde", err
+          );
+        });
     }
   }
 };

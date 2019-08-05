@@ -26,9 +26,9 @@ router.post('/:id/addTask', (req, res) => {
 })
 
 
-router.get('/myTask', (req,res,) => {
-    tas
-})
+// router.get('/myTask', (req,res,) => {
+//     tas
+// })
 
 
 module.exports = router;
