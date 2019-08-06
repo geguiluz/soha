@@ -7,6 +7,9 @@
       <v-layout justify-center>
         <v-card outlined width='500' max-width="344" class="mx-auto">
           <v-layout justify-end>
+          <v-btn class="mx-2" icon small @click="toggleEdition">
+            <v-icon>edit</v-icon>
+          </v-btn>
           <v-btn class="mx-2" fab small dark color="green" @click="addTask">
             <v-icon dark>add</v-icon>
           </v-btn>
@@ -25,15 +28,12 @@
             hint="Para agregarla a la lista, sólo da enter"
             >
             </v-text-field>
-            <v-list-item-group>
               <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <v-list-item :id="element._id" v-for="(element, index) in allLists[0].listItems" :key="index">
-                        <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
-                    </v-list-item>
+                    <taskItem :id="element._id" v-for="(element, index) in allLists[0].listItems" :key="index" :taskname="element.name" :completed="element.completed" :allowEdit="allLists[0].allowEdit">
+                    </taskItem>
                   </transition-group>
               </draggable>
-            </v-list-item-group>
           </v-card-text>
         </v-card>
 
@@ -56,15 +56,12 @@
             :autofocus="allLists[1].addTaskFlg"
             >
             </v-text-field>
-            <v-list-item-group>
               <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <v-list-item :id="element._id" v-for="(element, index) in allLists[1].listItems" :key="index">
-                        <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
-                    </v-list-item>
+                    <taskItem :id="element._id" v-for="(element, index) in allLists[1].listItems" :key="index" :taskname="element.name" :completed="element.completed">
+                    </taskItem>
                   </transition-group>
               </draggable>
-            </v-list-item-group>
           </v-card-text>
         </v-card>
         
@@ -86,19 +83,22 @@
 <script>
 import draggable from 'vuedraggable';
 import axios from "axios";
+import taskItem from "../components/TaskItem";
 
 export default {
   name: "DraggableLists",
   display: "Draggable Lists",
   order: 1,
   components: {
-    draggable
+    draggable,
+    taskItem
   },
   data() {
     return {
       allLists: [{
         listTitle: "Mis Tareas",
         addTaskFlg: false,
+        allowEdit: false,
         newTask: '',
         persistentHint: false,
         listItems: [
@@ -131,6 +131,12 @@ export default {
   methods: {
     log: function(evt) {
       window.console.log(evt);
+    },
+    toggleEdition() {
+      // This flag helps us setting focus on newTask field and showing the field
+      // itself
+      this.allLists[0].allowEdit = !this.allLists[0].allowEdit
+      console.log('Toggling edition', this.allLists[0].allowEdit)
     },
     addTask() {
       // This flag helps us setting focus on newTask field and showing the field
@@ -245,6 +251,7 @@ strong {
 
 .ghost {
   border-left: 6px solid blue;
+  margin-left: -20px;
   box-shadow: 10px 10px 5px -1px rgba(0, 0, 0, 0.14);
   opacity: 0.7;
   &::before {
@@ -253,7 +260,6 @@ strong {
     widows: 20px;
     height: 20px;
     margin-left: -50px;
-    background-image: url('../assets/logo.png');
   }
 }
 
