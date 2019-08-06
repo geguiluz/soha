@@ -1,14 +1,33 @@
 <template>
-    <v-card max-width="344" class="mx-auto">
-        <v-card-title>List Title</v-card-title>
-        <draggable v-model="taskArray" ghost-class="ghost" @end="onEnd">
+  <v-card outlined width='500' max-width="344" class="mx-auto">
+    <v-layout justify-end>
+    <v-btn class="mx-2" fab small dark color="green" @click="addTask">
+      <v-icon dark>add</v-icon>
+    </v-btn>
+    </v-layout>
+    <v-card-title class="dark-color">
+      {{ listTitle }}
+    </v-card-title>
+    <v-card-text>
+      <v-text-field v-if="allLists[0].addTaskFlg" 
+      label="Escribe una tarea nueva" 
+      name="newTask" 
+      type="text" 
+      v-model="newTask"
+      @keyup.enter="saveTask"
+      :autofocus="allLists[0].addTaskFlg"
+      hint="Para agregarla a la lista, sólo da enter"
+      >
+      </v-text-field>
+      <v-list-item-group>
+        <draggable class="list-group" :list="listItems" group="TaskList" @change="log" ghost-class="ghost">
             <transition-group type = "transition" name="flip-list">
-                <div class="sortable" :id="element.id" v-for="element in taskArray" :key="element.id">
-                    <v-checkbox hide-details class="shrink mr-2 mt-0" v-model="element.completed" :label="element.name"></v-checkbox> 
-                </div>
+              
             </transition-group>
         </draggable>
-    </v-card>
+      </v-list-item-group>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -16,6 +35,13 @@ import draggable from 'vuedraggable';
 
 export default {
   name: 'TaskList',
+  props: {
+    listTitle: '',
+    addTaskFlg: '',
+    newTask: '',
+    addTaskFlg: '',
+    listItems: [],
+  },
   
   components: {
     draggable
@@ -25,16 +51,7 @@ export default {
   },
   data() {
     return {
-      taskArray: [
-        {name: 'First Task', id: 0, completed: false},
-        {name: 'Second Task', id: 1, completed: false},
-        {name: 'Third Task', id: 2, completed: false},
-        {name: 'Fourth Task', id: 3, completed: true},
-        {name: 'Fifth Task', id: 4, completed: true},
-        {name: 'Sixth Task', id: 5, completed: true},
-      ],
-      oldIndex: '',
-      newIndex: ''
+      
     }
   },
   methods: {

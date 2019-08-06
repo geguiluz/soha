@@ -38,6 +38,22 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './components/DraggableLists.vue')
     },
     {
+      path: '/taskItem',
+      name: 'TaskItem',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './components/TaskItem.vue')
+    },
+    {
+      path: '/taskList',
+      name: 'TaskList',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './components/TaskList.vue')
+    },
+    {
       path: '/login',
       name: 'Login',
       // route level code-splitting

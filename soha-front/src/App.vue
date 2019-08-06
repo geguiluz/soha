@@ -15,7 +15,7 @@
     <v-content>
       <v-navigation-drawer
       absolute
-      expand-on-hover
+      mini-variant
       permanent
       >
         <template v-slot:prepend>
@@ -26,7 +26,7 @@
               </v-list-item-avatar>
             </v-list-item>
 
-            <v-list-item
+            <!-- <v-list-item
               link
               two-line
             >
@@ -37,7 +37,7 @@
               <v-list-item-action>
                 <v-icon>mdi-menu-down</v-icon>
               </v-list-item-action>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </template>
 
@@ -117,6 +117,6 @@ export default {
 
 <style scoped>
   .router-view-container {
-    margin-left: 3vw;
+    margin-left: 6.2vw;
   }
 </style>
