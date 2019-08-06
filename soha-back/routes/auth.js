@@ -7,26 +7,21 @@ const User    = require('../models/User');
 
 const bcryptSalt = 10;
 
-router.get('/home', (req, res) => {
-    res.json({
-        msg: 'Estás en la página principal'
-    })
-});
 
-//Bring All the users back
+//ESTA RUTA TE REGRESA TODOS LOS USUARIOS.
 router.get('/userView', ( req,res) => {
     User.find().then(data => res.status(200).json(data))
     .catch(err => console.log(err))
 })
 
-//Brinf only one User Back 
+//SOLO REGRESA LA INFORMACION DE UN USUARIO.
 router.get('/:id/user', (req, res) => {     
     const id =  req.params.id
     User.find({_id: id}).then(data => res.status(200).json(data))
     .catch(err => console.log(err))    
     })
 
-
+//REGISTRO
 router.post('/signup', (req, res) =>{
     const datosUsuario = req.body
     const email        = datosUsuario.email
@@ -56,11 +51,10 @@ router.post('/signup', (req, res) =>{
         })
         .catch(err => console.log(err));
 })
-//Por que cuando se hace el signUp se crea una secion?
 
 
 
-
+//LOGEOS
 router.post('/login', (req, res) => {
     const {password, email} = req.body;
 
@@ -82,12 +76,20 @@ router.post('/login', (req, res) => {
     })
 });
 
-
+//CERRAR SESSION
 router.get("/logout", (req, res, next) => {
     req.session.destroy((err) => {
       res.json({msg:'see u'});
     });
   });
+
+//ID SESSION
+// router.get('/session', (req, res) => {
+//     const userId = req.session.currentUser._id;
+    
+//     res.json({userId})
+// })
+
 
 module.exports = router;
 
