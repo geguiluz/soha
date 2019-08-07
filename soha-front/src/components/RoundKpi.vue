@@ -37,13 +37,13 @@ export default {
                 this.color = 'green'
             } else if (percentage >= 80 && percentage < 100) {
                 // Generic primary blue
-                this.color = '#2D98FA'
+                this.color = '#1177CC'
             } else if (percentage >= 50 && percentage < 80) {
                 // Orange
-                this.color = '#C96A13'
+                this.color = '#FB8801'
             } else if (percentage <= 30) {
                 // Red
-                this.color = '#AD0000'
+                this.color = '#D21717'
             }
         }
   }
