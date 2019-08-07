@@ -260,7 +260,7 @@ export default {
 <style scoped lang="scss">
 
 .dark-color {
-  background-color: black;
+  background-color: #424242;
   color: whitesmoke;
 }
 

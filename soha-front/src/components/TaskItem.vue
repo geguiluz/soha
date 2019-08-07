@@ -19,9 +19,10 @@
               icon
               small
           >
+            <!-- :color="missionTags[0].displayColor" -->
             <v-icon
-            :color="missionTags[0].displayColor"
-            >bookmark</v-icon>
+            :color="tag.color"
+            >{{ tag.icon }}</v-icon>
           </v-btn>
 
         <v-speed-dial
@@ -67,7 +68,16 @@ export default {
   },
   data() {
     return {
-      editMode: false
+      editMode: false,
+      tag: {icon: 'bookmark', color: 'blue'}
+    }
+  },
+  mounted() {
+    this.renderMissionTag()
+  },
+  computed: {
+    updateColor() {
+      this.renderMissionTag()
     }
   },
   methods: {
@@ -100,9 +110,18 @@ export default {
       // Creo que necesito invocar el método del componente padre
     },
     changeMission() {
-      // TODO: Implementar ruta para borrar task
-      // TODO: Usar splice para eliminar el índice en específico
-      // Creo que necesito invocar el método del componente padre
+      
+
+    },
+    renderMissionTag() {
+      if ( this.missionTags === null || this.missionTags.length === 0 ){
+        this.tag.color = ''
+        this.tag.icon = 'mdi-bookmark-outline'
+      } else {
+        this.tag.color = this.missionTags[0].displayColor
+        this.tag.icon = 'bookmark'
+      }
+
     }
   }
 }
