@@ -7,7 +7,7 @@ const router  = express.Router();
 router.get('/:id/myTasks', ( req,res,next ) => {
     let { id } = req.params;
     Task.find( { $or: [ { createdBy:id}, { assignedTo:id } ] })
-    .populate('missionTags')
+    .populate('missionTags', 'missionName displayColor')
     .then(data => 
         res.status(200).json(data))
     .catch(err => console.log(err))
