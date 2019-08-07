@@ -3,28 +3,30 @@ const router  = express.Router();
 const bcrypt  = require('bcryptjs');
 const User    = require('../models/User');
 
+
+
 const bcryptSalt = 10;
 
-router.get('/home', (req, res) => {
-    res.json({
-        msg: 'Estás en la página principal'
-    })
-});
-//Esta vista te debe de direccionar al login/signup
 
-
-
-router.get('/userView', ( req,res,next ) => {
+//ESTA RUTA TE REGRESA TODOS LOS USUARIOS.
+router.get('/userView', ( req,res) => {
     User.find().then(data => res.status(200).json(data))
     .catch(err => console.log(err))
 })
 
+//SOLO REGRESA LA INFORMACION DE UN USUARIO.
+router.get('/:id/user', (req, res) => {     
+    const id =  req.params.id
+    User.find({_id: id}).then(data => res.status(200).json(data))
+    .catch(err => console.log(err))    
+    })
 
-
-
+//REGISTRO
 router.post('/signup', (req, res) =>{
     const datosUsuario = req.body
     const email        = datosUsuario.email
+    // const userId = req.session.currentUser._id;
+    
 
     if(datosUsuario.name === '' || datosUsuario.email === '' || datosUsuario.password === ''){
         return res.json({msg:'Tienes que agregar username, mail y password'})
@@ -49,11 +51,10 @@ router.post('/signup', (req, res) =>{
         })
         .catch(err => console.log(err));
 })
-//Por que cuando se hace el signUp se crea una secion?
 
 
 
-
+//LOGEOS
 router.post('/login', (req, res) => {
     const {password, email} = req.body;
 
@@ -75,16 +76,20 @@ router.post('/login', (req, res) => {
     })
 });
 
-
+//CERRAR SESSION
 router.get("/logout", (req, res, next) => {
     req.session.destroy((err) => {
       res.json({msg:'see u'});
     });
   });
 
+//ID SESSION
+// router.get('/session', (req, res) => {
+//     const userId = req.session.currentUser._id;
+    
+//     res.json({userId})
+// })
 
-//Me falta hacer el delete y el update del usuario.
-//Si tiene acceso que se dirija a a que crear un proyecto/empresa??
 
 module.exports = router;
 

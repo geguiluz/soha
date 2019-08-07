@@ -12,10 +12,17 @@ const path          = require('path');
 const app           = express();
 
 
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+
+http.listen(3001, function(){
+  console.log('listening on *:3001');
+});
+
+
 //ROUTES
 const auth           = require('./routes/auth');
 const task           = require('./routes/Task')
-const dashboardTasks = require('./routes/dashboardTasks')
 
 // CONNECTION TO MONGO 
 mongoose.connect("mongodb+srv://ADMIN:1234@cluster0-hbugd.mongodb.net/test?retryWrites=true&w=majority",{ useNewUrlParser: true })
@@ -55,6 +62,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
 // SESSION'S!
 app.use(session({
     secret: "basic-auth-secret",
@@ -66,14 +76,51 @@ app.use(session({
     }));
 
 
+
+    
+
+    app.get('/', function(req, res){
+      res.sendFile(__dirname + '/index.html');
+    });
+
+    io.on('connection', function(socket){
+      console.log('a user connected');
+      socket.on('disconnect', function(){
+        console.log('user disconnected');
+      });
+    });
+
+    io.on('connection', function(socket){
+      socket.on('chat message', function(msg){
+        io.emit('chat message', msg);
+      });
+    });
+
+
+
+
+
 //setings 
 app.set('PORT', 3000);
 
 //Routes
 app.use("/", auth);
 app.use("/", task)
-app.use('/', dashboardTasks)
+
 
 app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuchas?
   console.log(`server on PORT: ${app.get("PORT")}`);
 });
+
+
+
+
+/// QUE SOLO SEA UN PUERTO 
+
+/// QUE SEA PARA VUE
+
+/// QUE SE ACTUALIZE LA BDD y que solo sea a ciertos usuarios.
+
+/// Tambien ya nesecito que sea privado. 
+
+

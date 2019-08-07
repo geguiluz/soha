@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <DraggableLists/>
-    </div>
+<div>
+    <DraggableLists/>
+</div>
 </template>
 
 <script>
@@ -15,3 +15,4 @@ export default {
   },
 }
 </script>
+
