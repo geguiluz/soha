@@ -14,7 +14,16 @@
           background-color="rgba(0, 0, 0, 0)"
         >
         </v-text-field>
-        <v-spacer></v-spacer>
+
+          <v-btn
+              icon
+              small
+          >
+            <v-icon
+            :color="missionTags[0].displayColor"
+            >bookmark</v-icon>
+          </v-btn>
+
         <v-speed-dial
         right
         direction="right"
@@ -53,7 +62,8 @@ export default {
     taskname: String,
     completed: Boolean,
     allowEdit: Boolean,
-    taskId: String
+    taskId: String,
+    missionTags: Array
   },
   data() {
     return {
@@ -85,6 +95,11 @@ export default {
         }); 
     },
     deleteTask() {
+      // TODO: Implementar ruta para borrar task
+      // TODO: Usar splice para eliminar el índice en específico
+      // Creo que necesito invocar el método del componente padre
+    },
+    changeMission() {
       // TODO: Implementar ruta para borrar task
       // TODO: Usar splice para eliminar el índice en específico
       // Creo que necesito invocar el método del componente padre
