@@ -71,12 +71,8 @@
         <v-card outlined  max-width="344" class="mx-auto" >
             <v-card-title>KPI's</v-card-title>
             <v-card-text>
-              <div class="kpi-row" :id="element.id" v-for="(element) in kpiList" :key="element.id">
-                <v-progress-circular rotate=90 size=80 :value="element.value" width=12 color="green">{{ element.value }}%</v-progress-circular>
-                <span>
-                {{ element.name }}
-                </span>
-              </div>
+              <roundKpi :id="element.id" v-for="(element) in kpiList" :key="element.id" :name="element.name" :value="element.value" :width='12'>
+              </roundKpi>
             </v-card-text>
         </v-card>
       </v-layout>
@@ -87,6 +83,7 @@
 import draggable from 'vuedraggable';
 import axios from "axios";
 import taskItem from "../components/TaskItem";
+import roundKpi from "../components/RoundKpi";
 
 export default {
   name: "DraggableLists",
@@ -94,7 +91,8 @@ export default {
   order: 1,
   components: {
     draggable,
-    taskItem
+    taskItem,
+    roundKpi
   },
   data() {
     return {
@@ -116,9 +114,9 @@ export default {
         ]
       }],
       kpiList: [
-          { name: "Primer KPI", id: 1, value: 58 },
-          { name: "Segundo KPI", id: 2, value: 90 },
-          { name: "Tercer KPI", id: 3, value: 30 }
+          { name: "Primer KPI", id: 1, value: 58, displayColor: "green" },
+          { name: "Segundo KPI", id: 2, value: 90, displayColor: "green" },
+          { name: "Tercer KPI", id: 3, value: 30, displayColor: "green" }
         
       ]
     };
@@ -198,6 +196,25 @@ export default {
         .catch(err => {
           alert(
             "Lo sentimos, hubo un problema al traer tu lista de tareas. Inténtalo más tarde", err
+          );
+        });
+    },
+    getMyMissions() {
+      // Get my tasks from myTasks route, then render them to
+      // this.kpiList[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      const url = "http://localhost:3000/"+currentUser+"/myMissions"
+      axios
+        .get(url)
+        .then(res => {
+          this.this.kpiList = res.data
+          console.log("My Mission List",this.kpiList)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer tus misiones. Inténtalo más tarde", err
           );
         });
     }
