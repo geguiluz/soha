@@ -69,9 +69,9 @@
         </v-card>
         
         <v-card outlined  max-width="344" class="mx-auto" >
-            <v-card-title>KPI's</v-card-title>
+            <v-card-title>Mission Status</v-card-title>
             <v-card-text>
-              <roundKpi :id="element.id" v-for="(element) in kpiList" :key="element.id" :name="element.name" :value="element.value" :width='12'>
+              <roundKpi :id="element.id" v-for="(element) in kpiList" :key="element.id" :name="element.name" :value="element.value" :width="12">
               </roundKpi>
             </v-card-text>
         </v-card>
@@ -123,10 +123,12 @@ export default {
   },
   mounted() {
     this.getMyTasks()
+    this.getMissionStats()
   },
   computed: {
     updateMyTasks() {
       this.getMyTasks()
+      this.getMissionStats()
     }
   },
   methods: {
@@ -215,6 +217,25 @@ export default {
         .catch(err => {
           alert(
             "Lo sentimos, hubo un problema al traer tus misiones. Inténtalo más tarde", err
+          );
+        });
+    },
+    getMissionStats() {
+      // Get my tasks from myTasks route, then render them to
+      // this.kpiList[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      const url = "http://localhost:3000/"+currentUser+"/myMissions"
+      axios
+        .get(url)
+        .then(res => {
+          this.this.kpiList = res.data
+          console.log("My Mission List",this.kpiList)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer el resumen de tus misiones. Inténtalo más tarde", err
           );
         });
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="kpi-row">
-        <v-progress-circular rotate=90 size=80 :value="value" :width="width" :color="this.color">{{ value }}%</v-progress-circular>
+        <v-progress-circular rotate=90 size=110 :value="value" :width="width" :color="this.color">{{ value }}%</v-progress-circular>
         <span>
         {{ name }}
         </span>
@@ -31,7 +31,6 @@ export default {
   methods: {
     calcProgressColor() {
         let percentage = this.value
-            console.log('Color', this.color)
             // this.color = 'green'
             if (percentage === 100) {
                 this.color = 'green'
