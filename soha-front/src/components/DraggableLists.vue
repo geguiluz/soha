@@ -123,12 +123,12 @@ export default {
   },
   mounted() {
     this.getMyTasks()
-    this.getMissionStats()
+    // this.getMissionStats()
   },
   computed: {
     updateMyTasks() {
       this.getMyTasks()
-      this.getMissionStats()
+      // this.getMissionStats()
     }
   },
   methods: {
@@ -226,7 +226,7 @@ export default {
       // TODO: Read user ID off the current session
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-      const url = "http://localhost:3000/"+currentUser+"/myMissions"
+      const url = "http://localhost:3000/"+currentUser+"/myMissionStats"
       axios
         .get(url)
         .then(res => {

@@ -129,5 +129,25 @@ router.get('/:id/myMissions', ( req,res,next ) => {
     .catch(err => console.log(err))
 })
 
+// MOSTRAR EL RESUMEN DE LAS MISIONES (CUÁNTAS TASKS EXISTEN PARA CADA MISIÓN Y
+// CUÁNTAS DE ELLAS ESTÁN MARCADAS COMO COMPLETADAS)
+
+// router.get('/:id/myMissionStats', ( req,res,next ) => {
+//     let { id } = req.params;
+//     let followers_count = 30;
+//     Task.aggregate([
+//         { "$match": { "_id": id } },
+//         {
+//           "$count": {"_id": "$_id"}  
+//         },
+//         {
+//             "$sort": {missionName: 1}
+//         }
+//     ])
+//     .then(data => 
+//         res.status(200).json(data))
+//     .catch(err => console.log(err))
+// })
+
 module.exports = router;
 
