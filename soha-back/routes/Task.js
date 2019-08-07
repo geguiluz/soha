@@ -11,6 +11,12 @@ router.get('/:id/myTasks', ( req,res,next ) => {
     .catch(err => console.log(err))
 })
 
+router.get('/', (req, res) => {
+    console.log("dirname: ",__dirname)
+    res.redirect('http://localhost:8080/dashboard')
+
+  });
+ 
 
 //SOLO TAREAS CREADAS POR EL USUARIO
 router.get('/:id/myTasksDelegated', ( req,res,next ) => {

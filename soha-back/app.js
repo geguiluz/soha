@@ -9,15 +9,12 @@ const MongoStore    = require("connect-mongo")(session);
 const cors          = require('cors')
 const logger        = require('morgan');
 const path          = require('path');
-const app           = express();
+const app           = require('express')();
+const server        = require('http').Server(app);
+const io            = require('socket.io')(server);
 
-
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-
-http.listen(3001, function(){
-  console.log('listening on *:3001');
-});
+server.listen(80);
+// WARNING: app.listen(80) will NOT work here!
 
 
 //ROUTES
@@ -75,14 +72,6 @@ app.use(session({
     })
     }));
 
-
-
-    
-
-    app.get('/', function(req, res){
-      res.sendFile(__dirname + '/index.html');
-    });
-
     io.on('connection', function(socket){
       console.log('a user connected');
       socket.on('disconnect', function(){
@@ -95,8 +84,6 @@ app.use(session({
         io.emit('chat message', msg);
       });
     });
-
-
 
 
 
@@ -115,7 +102,6 @@ app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuc
 
 
 
-/// QUE SOLO SEA UN PUERTO 
 
 /// QUE SEA PARA VUE
 
