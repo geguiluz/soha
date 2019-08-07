@@ -17,7 +17,11 @@ router.get('/:id/myTasks', ( req,res,next ) => {
 //SOLO TAREAS CREADAS POR EL USUARIO Y QUE FUERON ASIGNADAS A ALGUIEN MÁS
 router.get('/:id/myTasksDelegated', ( req,res,next ) => {
     let { id } = req.params;
-    Task.find({ createdBy:id })
+    Task.find({ $and: [
+        { createdBy:id },
+        { assignedTo: { $not: {$regex: id } } },
+        { assignedTo: { $exists: true, $ne: [] } }
+    ] })
     .then(data => 
         res.status(200).json(data))
     .catch(err => console.log(err))

@@ -1,6 +1,12 @@
 <template>
     <div class="kpi-row">
-        <v-progress-circular rotate=90 size=110 :value="value" :width="width" :color="this.color">{{ value }}%</v-progress-circular>
+        <v-progress-circular rotate=90 size=110 
+        :value="value" 
+        :width="width" 
+        :color="this.progressColor"
+        >
+        {{ value }}%
+        </v-progress-circular>
         <span>
         {{ name }}
         </span>
@@ -13,11 +19,12 @@ export default {
   props: {
       value: String,
       width: Number,
-      name: String
+      name: String,
+      color: String
     },
   data() {
     return {
-        color: 'green'
+        progressColor: 'blue'
     }
   },
   mounted() {
@@ -30,21 +37,26 @@ export default {
   },
   methods: {
     calcProgressColor() {
+      if ( this.color === '' )
+      {
         let percentage = this.value
-            // this.color = 'green'
-            if (percentage === 100) {
-                this.color = 'green'
-            } else if (percentage >= 80 && percentage < 100) {
-                // Generic primary blue
-                this.color = '#1177CC'
-            } else if (percentage >= 50 && percentage < 80) {
-                // Orange
-                this.color = '#FB8801'
-            } else if (percentage <= 30) {
-                // Red
-                this.color = '#D21717'
-            }
+          // this.color = 'green'
+          if (percentage === 100) {
+              this.progressColor = 'green'
+          } else if (percentage >= 80 && percentage < 100) {
+              // Generic primary blue
+              this.progressColor = '#1177CC'
+          } else if (percentage >= 50 && percentage < 80) {
+              // Orange
+              this.progressColor = '#FB8801'
+          } else if (percentage <= 30) {
+              // Red
+              this.progressColor = '#D21717'
+          }
+        } else {
+          this.progressColor = this.color
         }
+      }
   }
 };
 </script>

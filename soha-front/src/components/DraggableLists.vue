@@ -7,9 +7,9 @@
       <v-layout justify-center>
         <v-card outlined width="500" max-width="344" class="mx-auto" >
           <v-layout justify-end>
-            <v-btn class="mx-2" icon small>
+            <!-- <v-btn class="mx-2" icon small>
               <v-icon>mdi-bullseye-arrow</v-icon>
-            </v-btn>
+            </v-btn> -->
             <v-btn class="mx-2" icon small @click="toggleEdition">
               <v-icon>edit</v-icon>
             </v-btn>
@@ -85,7 +85,13 @@
         <v-card outlined  max-width="344" class="mx-auto" >
             <v-card-title>Mission Status</v-card-title>
             <v-card-text>
-              <roundKpi :id="element.id" v-for="(element) in kpiList" :key="element.id" :name="element.name" :value="element.value" :width="12">
+              <roundKpi :id="element.id" v-for="(element) in kpiList" 
+              :key="element.id" 
+              :name="element.name" 
+              :value="element.value" 
+              :width="12"
+              :color="element.displayColor"
+              >
               </roundKpi>
             </v-card-text>
         </v-card>
@@ -123,25 +129,30 @@ export default {
         listTitle: "Tareas Delegadas",
         listItems: [
           { name: "Quinta Tarea", _id: 5, completed: true, missionTags: [{missionName: "Ventas", displayColor: "#9F23B3"}] },
-          { name: "Sexta Tarea", _id: 6, completed: true [{missionName: "Servicio a Cliente", displayColor: "#8B71DC"}]},
-          { name: "Séptima Tarea", _id: 7, completed: false [{missionName: "Comunicación Interna", displayColor: "#2388B3"}]}
+          { name: "Sexta Tarea", _id: 6, completed: true, missionTags: [{missionName: "Servicio a Cliente", displayColor: "#8B71DC"}]},
+          { name: "Séptima Tarea", _id: 7, completed: false, missionTags: [{missionName: "Comunicación Interna", displayColor: "#2388B3"}]}
         ]
       }],
       kpiList: [
-          { name: "Primer KPI", id: 1, value: 58, displayColor: "green" },
-          { name: "Segundo KPI", id: 2, value: 90, displayColor: "green" },
-          { name: "Tercer KPI", id: 3, value: 30, displayColor: "green" }
+          { name: "Ventas", id: 1, value: 58, displayColor: "#9F23B3" },
+          { name: "Servicio a Cliente", id: 2, value: 90, displayColor: "#8B71DC" },
+          { name: "Comunicación Interna", id: 3, value: 30, displayColor: "#2388B3" }
         
       ]
     };
   },
   mounted() {
     this.getMyTasks()
+    this.getDelegatedTasks()
     // this.getMissionStats()
   },
   computed: {
     updateMyTasks() {
       this.getMyTasks()
+      // this.getMissionStats()
+    },
+    updateDelegatedTasks() {
+      this.getDelegatedTasks()
       // this.getMissionStats()
     }
   },
@@ -208,6 +219,25 @@ export default {
         .then(res => {
           this.allLists[0].listItems = res.data
           console.log("My Tasks List",this.allLists[0].listItems)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer tu lista de tareas. Inténtalo más tarde", err
+          );
+        });
+    },
+    getDelegatedTasks() {
+      // Get my tasks from myTasks route, then render them to
+      // this.allLists[0].listItems[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      const url = "http://localhost:3000/"+currentUser+"/myTasksDelegated"
+      axios
+        .get(url)
+        .then(res => {
+          this.allLists[1].listItems = res.data
+          console.log("Delegated Tasks List",this.allLists[1].listItems)
         })
         .catch(err => {
           alert(
