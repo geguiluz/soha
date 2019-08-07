@@ -35,6 +35,7 @@
                 dark
                 small
                 color="red"
+                @click="deleteTask"
             >
                 <v-icon>delete</v-icon>
             </v-btn>
@@ -66,6 +67,8 @@ export default {
         },
         deleteTask() {
             // TODO: Implementar ruta para borrar task
+            // TODO: Usar splice para eliminar el índice en específico
+            // Creo que necesito invocar el método del componente padre
         }
     }
 }

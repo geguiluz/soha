@@ -5,14 +5,17 @@
     fill-height
     >
       <v-layout justify-center>
-        <v-card outlined width='500' max-width="344" class="mx-auto">
+        <v-card outlined width="500" max-width="344" class="mx-auto" >
           <v-layout justify-end>
-          <v-btn class="mx-2" icon small @click="toggleEdition">
-            <v-icon>edit</v-icon>
-          </v-btn>
-          <v-btn class="mx-2" fab small dark color="green" @click="addTask">
-            <v-icon dark>add</v-icon>
-          </v-btn>
+            <v-btn class="mx-2" icon small>
+              <v-icon>mdi-bullseye-arrow</v-icon>
+            </v-btn>
+            <v-btn class="mx-2" icon small @click="toggleEdition">
+              <v-icon>edit</v-icon>
+            </v-btn>
+            <v-btn class="mx-2" fab small dark color="green" @click="addTask">
+              <v-icon dark>add</v-icon>
+            </v-btn>
           </v-layout>
           <v-card-title class="dark-color">
             {{ allLists[0].listTitle }}
@@ -69,7 +72,7 @@
             <v-card-title>KPI's</v-card-title>
             <v-card-text>
               <div class="kpi-row" :id="element.id" v-for="(element) in kpiList" :key="element.id">
-                <v-progress-circular rotate=90 size=80 :value="element.value" width=8 color="green">{{ element.value }}%</v-progress-circular>
+                <v-progress-circular rotate=90 size=80 :value="element.value" width=12 color="green">{{ element.value }}%</v-progress-circular>
                 <span>
                 {{ element.name }}
                 </span>
