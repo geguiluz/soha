@@ -45,12 +45,15 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "TaskItem",
   props: {
     taskname: String,
     completed: Boolean,
-    allowEdit: Boolean
+    allowEdit: Boolean,
+    taskId: String
   },
   data() {
     return {
@@ -66,20 +69,18 @@ export default {
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
       axios
-        .post("http://localhost:3000/"+currentUser+"/addTask", {
-          name: this.allLists[0].newTask, 
-          completed: false 
+        .put("http://localhost:3000/"+currentUser+"/"+this.taskId+"/changeTaskName", {
+          name: this.taskname, 
+          completed: this.completed 
         })
         .then(res => {
-          this.allLists[0].addTaskFlg = false 
-          
           // Disable edit mode
           this.editMode = false
 
         })
         .catch(err => {
           alert(
-            "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
+            "Lo sentimos, no se pudo modificar la tarea, favor de intentar más tarde.", err
           );
         }); 
     },

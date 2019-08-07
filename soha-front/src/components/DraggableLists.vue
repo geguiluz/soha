@@ -33,7 +33,7 @@
             </v-text-field>
               <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <taskItem :id="element._id" v-for="(element, index) in allLists[0].listItems" :key="index" :taskname="element.name" :completed="element.completed" :allowEdit="allLists[0].allowEdit">
+                    <taskItem :id="element._id" v-for="(element, index) in allLists[0].listItems" :key="index" :taskname="element.name" :completed="element.completed" :allowEdit="allLists[0].allowEdit" :taskId="element._id">
                     </taskItem>
                   </transition-group>
               </draggable>
@@ -61,7 +61,7 @@
             </v-text-field>
               <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <taskItem :id="element._id" v-for="(element, index) in allLists[1].listItems" :key="index" :taskname="element.name" :completed="element.completed">
+                    <taskItem :id="element._id" v-for="(element, index) in allLists[1].listItems" :key="index" :taskname="element.name" :completed="element.completed" :taskId="element._id">
                     </taskItem>
                   </transition-group>
               </draggable>

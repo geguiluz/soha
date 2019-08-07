@@ -74,7 +74,7 @@ router.delete('/:id/:idTask/deleteTask', (req, res) => {
 })
 
 // CAMBIAR EL NOMBRE DE LA TASK.
-router.put('/:id/:idTask/changeNameTask', (req, res) => {
+router.put('/:id/:idTask/changeTaskName', (req, res) => {
     const {idTask} = req.params
     const {name}   = req.body
 
