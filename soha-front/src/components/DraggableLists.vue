@@ -44,13 +44,15 @@
             </v-text-field>
               <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <taskItem :id="element._id" v-for="(element, index) in allLists[0].listItems" 
-                    :key="index" 
+                    <taskItem :id="element._id" v-for="(element) in allLists[0].listItems" 
+                    :key="element._id" 
                     :taskname="element.name" 
                     :completed="element.completed" 
                     :allowEdit="allLists[0].allowEdit" 
                     :taskId="element._id"
                     :missionTags="element.missionTags"
+                    :delegated="false"
+                    :assignedTo="element.assignedTo"
                     >
                     </taskItem>
                   </transition-group>
@@ -60,8 +62,11 @@
  
         <v-card outlined width='500' max-width="344" class="mx-auto">
           <v-layout justify-end>
-          <v-btn class="mx-2" fab small dark color="green">
-            <v-icon dark>add</v-icon>
+          <v-btn class="mx-2" icon small @click="toggleReassign">
+            <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn class="mx-2" fab small disabled color="green">
+            <v-icon dark >add</v-icon>
           </v-btn>
           </v-layout>
           <v-card-title class="dark-color">
@@ -78,13 +83,15 @@
             </v-text-field>
               <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <taskItem :id="element._id" v-for="(element, index) in allLists[1].listItems" 
-                    :key="index" 
+                    <taskItem :id="element._id" v-for="(element) in allLists[1].listItems" 
+                    :key="element._id" 
                     :taskname="element.name" 
                     :completed="element.completed" 
                     :allowEdit="allLists[1].allowEdit" 
                     :taskId="element._id"
                     :missionTags="element.missionTags"
+                    :delegated="true"
+                    :assignedTo="element.assignedTo"
                     >
                     </taskItem>
                   </transition-group>
@@ -145,10 +152,8 @@ export default {
       },
       {
         listTitle: "Tareas Delegadas",
+        allowEdit: false,
         listItems: [
-          { name: "Quinta Tarea", _id: 5, completed: true, missionTags: [{missionName: "Ventas", displayColor: "#9F23B3"}] },
-          { name: "Sexta Tarea", _id: 6, completed: true, missionTags: [{missionName: "Servicio a Cliente", displayColor: "#8B71DC"}]},
-          { name: "Séptima Tarea", _id: 7, completed: false, missionTags: [{missionName: "Comunicación Interna", displayColor: "#2388B3"}]}
         ]
       }],
       kpiList: [
@@ -202,6 +207,12 @@ export default {
       // itself
       this.allLists[0].allowEdit = !this.allLists[0].allowEdit
       console.log('Toggling edition', this.allLists[0].allowEdit)
+    },
+    toggleReassign() {
+      // This flag helps us setting focus on newTask field and showing the field
+      // itself
+      this.allLists[1].allowEdit = !this.allLists[1].allowEdit
+      console.log('Toggling task reassignment', this.allLists[1].allowEdit)
     },
     addTask() {
       // This flag helps us setting focus on newTask field and showing the field

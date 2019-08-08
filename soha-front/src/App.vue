@@ -22,7 +22,7 @@
           <v-list>
             <v-list-item>
               <v-list-item-avatar>
-                <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+                <v-img src="../public/images/profile-pictures/Profile-geguiluz.png"></v-img>
               </v-list-item-avatar>
             </v-list-item>
 
