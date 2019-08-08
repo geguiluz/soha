@@ -7,26 +7,15 @@
       <v-layout justify-center>
         <v-card outlined width="500" max-width="344" class="mx-auto" >
           <v-layout justify-end>
-
-          <v-btn class="mx-2" icon small @click="toggleEdition">
-            <v-icon>edit</v-icon>
-          </v-btn>
-
-        <!-- Prueba de SOCKETS -->
-          <v-btn class="mx-2" fab small dark color="blue" @click="sendHi">
-            <v-icon dark>add</v-icon>
-          </v-btn>
-
-
-
-
-        <!-- Prueba de SOCKETS -->
-
-
-          <v-btn class="mx-2" fab small dark color="green" @click="addTask">
-            <v-icon dark>add</v-icon>
-          </v-btn>
-
+            <!-- <v-btn class="mx-2" icon small>
+              <v-icon>mdi-bullseye-arrow</v-icon>
+            </v-btn> -->
+            <v-btn class="mx-2" icon small @click="toggleEdition">
+              <v-icon>edit</v-icon>
+            </v-btn>
+            <v-btn class="mx-2" fab small dark color="green" @click="addTask">
+              <v-icon dark>add</v-icon>
+            </v-btn>
           </v-layout>
           <v-card-title class="dark-color">
             {{ allLists[0].listTitle }}
@@ -37,7 +26,7 @@
             name="newTask" 
             type="text" 
             v-model="allLists[0].newTask"
-            @keyup.enter="saveTask"    
+            @keyup.enter="saveTask"
             :autofocus="allLists[0].addTaskFlg"
             hint="Para agregarla a la lista, sólo da enter"
             >
@@ -59,7 +48,7 @@
               </draggable>
           </v-card-text>
         </v-card>
- 
+
         <v-card outlined width='500' max-width="344" class="mx-auto">
           <v-layout justify-end>
           <v-btn class="mx-2" icon small @click="toggleReassign">
@@ -79,7 +68,8 @@
             type="text" 
             v-model="allLists[1].newTask"
             @keyup.enter="saveTask"
-            :autofocus="allLists[1].addTaskFlg">
+            :autofocus="allLists[1].addTaskFlg"
+            >
             </v-text-field>
               <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
@@ -118,12 +108,9 @@
 </template>
 <script>
 import draggable from 'vuedraggable';
-
-import axios     from "axios";
-import taskItem  from "../components/TaskItem";
-import io        from 'socket.io-client';
+import axios from "axios";
+import taskItem from "../components/TaskItem";
 import roundKpi from "../components/RoundKpi";
-
 
 export default {
   name: "DraggableLists",
@@ -136,10 +123,6 @@ export default {
   },
   data() {
     return {
-      //SOCKETS
-      socket: io('localhost:3001'),
-      saludo: 'Hi!',
-
       allLists: [{
         listTitle: "Mis Tareas",
         addTaskFlg: false,
@@ -147,8 +130,7 @@ export default {
         newTask: '',
         persistentHint: false,
         listItems: [
-        ],
- 
+        ]
       },
       {
         listTitle: "Tareas Delegadas",
@@ -166,19 +148,9 @@ export default {
   },
   mounted() {
     this.getMyTasks()
-
     this.getDelegatedTasks()
     // this.getMissionStats()
-
-
-
-    //SOCKETS, ESTE RECIBE
-    this.socket.on('HI', (data) => {
-            console.log(data)
-        });
-
   },
-  
   computed: {
     updateMyTasks() {
       this.getMyTasks()
@@ -190,15 +162,6 @@ export default {
     }
   },
   methods: {
-
-    //SOCKETS, ESTE ENVIA 
-    // sendHi(e){
-    //   e.preventDefault();
-    //   this.socket.emit('SEND_HI', {
-    //     SALUD: this.saludo
-    //   })
-    // },
-    
     log: function(evt) {
       window.console.log(evt);
     },
@@ -229,14 +192,7 @@ export default {
       // this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
       // this.allLists[0].newTask = ''
       // TODO: Read user ID off the current session
-    // sendHi(e){
-    //   e.preventDefault();
-    //   this.socket.emit('SEND_HI', {
-    //     SALUD: this.saludo
-    //   })
-    // }
-    // ,
-
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
       axios
         .post("http://localhost:3000/"+currentUser+"/addTask", {
@@ -251,18 +207,12 @@ export default {
           // Push task to the beginning of task array
           this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, _id: newTaskItem._id, completed: false})
           this.allLists[0].newTask = ''
-          res.preventDefault(
-          this.socket.emit('SEND_HI', {
-            saludo: res
-           })
-          )
         })
         .catch(err => {
           alert(
             "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
           );
         });
-
     },
     getMyTasks() {
       // Get my tasks from myTasks route, then render them to

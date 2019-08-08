@@ -91,9 +91,8 @@ app.use(session({
     });
 
     io.on('connection', function(socket){
-      socket.on('SEND_HI', function(data){
-        console.log(data)
-        io.emit('HI', data);
+      socket.on('chat message', function(msg){
+        io.emit('chat message', msg);
       });
     });
 

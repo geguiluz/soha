@@ -21,7 +21,7 @@ router.get('/:id/myTasksDelegated', ( req,res,next ) => {
     let { id } = req.params;
     Task.find({ $and: [
         { createdBy:id },
-        { assignedTo: { $not: { $regex: id } } },
+        { assignedTo: { $not: {$regex: id } } },
         { assignedTo: { $exists: true, $ne: [] } }
     ] })
     .populate('missionTags', 'missionName displayColor')
