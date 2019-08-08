@@ -32,12 +32,22 @@
              </v-btn>
           </template>
           <v-list>
-            <v-list-item :id="element._id" v-for="(element) in missions" 
+            <v-list-item>
+              <v-chip color="default" @click="changeMission(null, '')" > 
+                <v-icon>mdi-close-circle-outline</v-icon> 
+                  Quitar Misión 
+                </v-chip>
+            </v-list-item>
+            <v-list-item :id="element._id" v-for="(element) in missionList" 
                     :key="element._id" >
-              <v-chip :color="element.displayColor" dark @click="changeMission"> {{ element.missionName }}</v-chip>
+              <v-chip :color="element.displayColor" dark @click="changeMission(element._id, element.displayColor)" > {{ element.missionName }}</v-chip>
             </v-list-item>
           </v-list>
         </v-menu>
+
+        <v-list-item-avatar v-if="delegated&&!allowEdit">
+          <v-img :src="avatar"></v-img>
+        </v-list-item-avatar>
 
         <v-speed-dial
         right
@@ -78,22 +88,29 @@ export default {
     completed: Boolean,
     allowEdit: Boolean,
     taskId: String,
-    missionTags: Array
+    missionTags: Array,
+    delegated: Boolean,
+    assignedTo: Array
   },
   data() {
     return {
       editMode: false,
       tag: {icon: 'bookmark', color: 'blue'},
-      missions: []
+      missionList: [],
+      avatar: ''
     }
   },
   mounted() {
     this.renderMissionTag()
     this.getMyMissions()
+    this.renderAvatar()
   },
   computed: {
     updateColor() {
       this.renderMissionTag()
+    },
+    updateAvatar() {
+      this.renderAvatar()
     },
     udpdateAvailableMissions() {
       this.getMyMissions()
@@ -128,34 +145,21 @@ export default {
       // TODO: Usar splice para eliminar el índice en específico
       // Creo que necesito invocar el método del componente padre
     },
-    changeMission() {
+    changeMission(missionId, newColor) {
         console.log("Changing Mission")
-        // Clear all missions
         // TODO: Read user ID off the current session
         const currentUser = '5d46632ebfbbe11ab5f5e5f0'
-
-        const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/clearMissions"
-        console.log(url)
-        axios
-          .delete(url)
-          .then(res => {
-            console.log("Clearing all missions")
-          })
-          .catch(err => {
-            alert(
-              "Lo sentimos, hubo un problema al modificar la misión (eliminar). Inténtalo más tarde", err
-            );
-        });
 
         const secondUrl = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/assignMission"
         console.log(secondUrl)
         axios
           .put(secondUrl, {
-            missionTags: this.missionTags 
+            missionId: missionId 
           })
           .then(res => {
-            this.missions = res.data
-            console.log("Updating mission",this.missions)
+            this.missionTags = res.data
+            this.tag.color = newColor
+            this.tag.icon = 'bookmark'
           })
           .catch(err => {
             alert(
@@ -174,6 +178,14 @@ export default {
       }
 
     },
+    renderAvatar() {
+      if ( this.assignedTo === null || this.assignedTo.length === 0 ){
+        this.avatar = ''
+      } else {
+        this.avatar = this.assignedTo[0].profilePic
+      }
+
+    },
     getMyMissions() {
       // Get my tasks from myTasks route, then render them to
       // this.kpiList[]
@@ -184,8 +196,8 @@ export default {
       axios
         .get(url)
         .then(res => {
-          this.missions = res.data
-          // console.log("My Mission List",this.missions)
+          this.missionList = res.data
+          // console.log("My Mission List",this.missionList)
         })
         .catch(err => {
           alert(
