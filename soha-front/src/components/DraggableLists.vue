@@ -192,6 +192,7 @@ export default {
       // this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
       // this.allLists[0].newTask = ''
       // TODO: Read user ID off the current session
+      
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
       axios
