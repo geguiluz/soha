@@ -34,6 +34,7 @@
             type="text" 
             v-model="allLists[0].newTask"
             @keyup.enter="saveTask"
+            @keydown="sendHi"
             :autofocus="allLists[0].addTaskFlg"
             hint="Para agregarla a la lista, sólo da enter"
             >
@@ -128,7 +129,6 @@ export default {
       //SOCKETS
       socket: io('localhost:3001'),
       saludo: 'Hi!',
-
 
       allLists: [{
         listTitle: "Mis Tareas",
