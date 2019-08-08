@@ -171,12 +171,6 @@ export default {
       this.allLists[0].allowEdit = !this.allLists[0].allowEdit
       console.log('Toggling edition', this.allLists[0].allowEdit)
     },
-    toggleReassign() {
-      // This flag helps us setting focus on newTask field and showing the field
-      // itself
-      this.allLists[1].allowEdit = !this.allLists[1].allowEdit
-      console.log('Toggling task reassignment', this.allLists[1].allowEdit)
-    },
     addTask() {
       // This flag helps us setting focus on newTask field and showing the field
       // itself
