@@ -242,6 +242,10 @@ export default {
     //   })
     // }
     // ,
+      // this.socket.on('HI', (data) => {
+      //       console.log(data)
+      //   });
+
 
            
             const currentUser = '5d46632ebfbbe11ab5f5e5f0'
