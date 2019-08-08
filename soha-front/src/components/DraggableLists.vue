@@ -38,8 +38,6 @@
             type="text" 
             v-model="allLists[0].newTask"
             @keyup.enter="saveTask"    
-            @keydown="sendHi"
-       
             :autofocus="allLists[0].addTaskFlg"
             hint="Para agregarla a la lista, sólo da enter"
             >
@@ -171,7 +169,7 @@ export default {
 
     //SOCKETS, ESTE RECIBE
     this.socket.on('HI', (data) => {
-            console.log(this.saludo )
+            console.log(data)
         });
 
   },
@@ -189,13 +187,13 @@ export default {
   methods: {
 
     //SOCKETS, ESTE ENVIA 
-    sendHi(e){
-      e.preventDefault();
-      this.socket.emit('SEND_HI', {
-        SALUD: this.saludo
-      })
-    }
-    ,
+    // sendHi(e){
+    //   e.preventDefault();
+    //   this.socket.emit('SEND_HI', {
+    //     SALUD: this.saludo
+    //   })
+    // },
+    
     log: function(evt) {
       window.console.log(evt);
     },
@@ -226,25 +224,40 @@ export default {
       // this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
       // this.allLists[0].newTask = ''
       // TODO: Read user ID off the current session
-      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+    // sendHi(e){
+    //   e.preventDefault();
+    //   this.socket.emit('SEND_HI', {
+    //     SALUD: this.saludo
+    //   })
+    // }
+    // ,
 
-      axios
-        .post("http://localhost:3000/"+currentUser+"/addTask", {
-           name: this.allLists[0].newTask, 
-           completed: false 
-        })
-        .then(res => {
-          this.allLists[0].addTaskFlg = false 
-          // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
-          // Push task to the beginning of task array
-          this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
-          this.allLists[0].newTask = ''
-        })
-        .catch(err => {
-          alert(
-            "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
-          );
-        });
+           
+            const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+            axios
+              .post("http://localhost:3000/"+currentUser+"/addTask", {
+                name: this.allLists[0].newTask, 
+                completed: false 
+              })
+              .then(res => {
+                this.allLists[0].addTaskFlg = false 
+                // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+                // Push task to the beginning of task array
+                this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+                this.allLists[0].newTask = ''
+                res.preventDefault(
+                  this.socket.emit('SEND_HI', {
+                    saludo: res
+                  })
+                )
+              })
+              .catch(err => {
+                alert(
+                  "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
+                );
+              });
+              
     },
     getMyTasks() {
       // Get my tasks from myTasks route, then render them to
