@@ -51,7 +51,7 @@
 
         <v-card outlined width='500' max-width="344" class="mx-auto">
           <v-layout justify-end>
-          <v-btn class="mx-2" icon small @click="toggleReassign">
+          <v-btn class="mx-2" icon small @click="toggleEditDelegated">
             <v-icon>edit</v-icon>
           </v-btn>
           <v-btn class="mx-2" fab small disabled color="green">
@@ -170,6 +170,12 @@ export default {
       // itself
       this.allLists[0].allowEdit = !this.allLists[0].allowEdit
       console.log('Toggling edition', this.allLists[0].allowEdit)
+    },
+    toggleEditDelegated() {
+      // This flag helps us setting focus on newTask field and showing the field
+      // itself
+      this.allLists[1].allowEdit = !this.allLists[1].allowEdit
+      console.log('Toggling edition for delegated', this.allLists[1].allowEdit)
     },
     addTask() {
       // This flag helps us setting focus on newTask field and showing the field
