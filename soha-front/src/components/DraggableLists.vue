@@ -206,10 +206,12 @@ export default {
            completed: false 
         })
         .then(res => {
+          let newTaskItem = res.data
+          console.log(newTaskItem)
           this.allLists[0].addTaskFlg = false 
           // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
           // Push task to the beginning of task array
-          this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
+          this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, _id: newTaskItem._id, completed: false})
           this.allLists[0].newTask = ''
         })
         .catch(err => {
