@@ -32,9 +32,15 @@
              </v-btn>
           </template>
           <v-list>
-            <v-list-item :id="element._id" v-for="(element) in missions" 
+            <v-list-item>
+              <v-chip color="default" @click="changeMission(null, '')" > 
+                <v-icon>mdi-close-circle-outline</v-icon> 
+                  Quitar Misión 
+                </v-chip>
+            </v-list-item>
+            <v-list-item :id="element._id" v-for="(element) in missionList" 
                     :key="element._id" >
-              <v-chip :color="element.displayColor" dark @click="changeMission(element._id, element.displayColor)"> {{ element.missionName }}</v-chip>
+              <v-chip :color="element.displayColor" dark @click="changeMission(element._id, element.displayColor)" > {{ element.missionName }}</v-chip>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -90,7 +96,7 @@ export default {
     return {
       editMode: false,
       tag: {icon: 'bookmark', color: 'blue'},
-      missions: [],
+      missionList: [],
       avatar: ''
     }
   },
@@ -141,22 +147,8 @@ export default {
     },
     changeMission(missionId, newColor) {
         console.log("Changing Mission")
-        // Clear all missions
         // TODO: Read user ID off the current session
         const currentUser = '5d46632ebfbbe11ab5f5e5f0'
-
-        // const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/clearMissions"
-        // console.log(url)
-        // axios
-        //   .delete(url)
-        //   .then(res => {
-        //     console.log("Clearing all missions")
-        //   })
-        //   .catch(err => {
-        //     alert(
-        //       "Lo sentimos, hubo un problema al modificar la misión (eliminar). Inténtalo más tarde", err
-        //     );
-        // });
 
         const secondUrl = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/assignMission"
         console.log(secondUrl)
@@ -204,8 +196,8 @@ export default {
       axios
         .get(url)
         .then(res => {
-          this.missions = res.data
-          // console.log("My Mission List",this.missions)
+          this.missionList = res.data
+          // console.log("My Mission List",this.missionList)
         })
         .catch(err => {
           alert(
