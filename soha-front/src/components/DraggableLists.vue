@@ -7,9 +7,9 @@
       <v-layout justify-center>
         <v-card outlined width="500" max-width="344" class="mx-auto" >
           <v-layout justify-end>
-            <v-btn class="mx-2" icon small>
+            <!-- <v-btn class="mx-2" icon small>
               <v-icon>mdi-bullseye-arrow</v-icon>
-            </v-btn>
+            </v-btn> -->
             <v-btn class="mx-2" icon small @click="toggleEdition">
               <v-icon>edit</v-icon>
             </v-btn>
@@ -33,7 +33,14 @@
             </v-text-field>
               <draggable class="list-group" :list="allLists[0].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <taskItem :id="element._id" v-for="(element, index) in allLists[0].listItems" :key="index" :taskname="element.name" :completed="element.completed" :allowEdit="allLists[0].allowEdit">
+                    <taskItem :id="element._id" v-for="(element, index) in allLists[0].listItems" 
+                    :key="index" 
+                    :taskname="element.name" 
+                    :completed="element.completed" 
+                    :allowEdit="allLists[0].allowEdit" 
+                    :taskId="element._id"
+                    :missionTags="element.missionTags"
+                    >
                     </taskItem>
                   </transition-group>
               </draggable>
@@ -61,7 +68,14 @@
             </v-text-field>
               <draggable class="list-group" :list="allLists[1].listItems" group="TaskList" @change="log" ghost-class="ghost">
                   <transition-group type = "transition" name="flip-list">
-                    <taskItem :id="element._id" v-for="(element, index) in allLists[1].listItems" :key="index" :taskname="element.name" :completed="element.completed">
+                    <taskItem :id="element._id" v-for="(element, index) in allLists[1].listItems" 
+                    :key="index" 
+                    :taskname="element.name" 
+                    :completed="element.completed" 
+                    :allowEdit="allLists[1].allowEdit" 
+                    :taskId="element._id"
+                    :missionTags="element.missionTags"
+                    >
                     </taskItem>
                   </transition-group>
               </draggable>
@@ -69,14 +83,16 @@
         </v-card>
         
         <v-card outlined  max-width="344" class="mx-auto" >
-            <v-card-title>KPI's</v-card-title>
+            <v-card-title>Mission Status</v-card-title>
             <v-card-text>
-              <div class="kpi-row" :id="element.id" v-for="(element) in kpiList" :key="element.id">
-                <v-progress-circular rotate=90 size=80 :value="element.value" width=12 color="green">{{ element.value }}%</v-progress-circular>
-                <span>
-                {{ element.name }}
-                </span>
-              </div>
+              <roundKpi :id="element.id" v-for="(element) in kpiList" 
+              :key="element.id" 
+              :name="element.name" 
+              :value="element.value" 
+              :width="12"
+              :color="element.displayColor"
+              >
+              </roundKpi>
             </v-card-text>
         </v-card>
       </v-layout>
@@ -87,6 +103,7 @@
 import draggable from 'vuedraggable';
 import axios from "axios";
 import taskItem from "../components/TaskItem";
+import roundKpi from "../components/RoundKpi";
 
 export default {
   name: "DraggableLists",
@@ -94,7 +111,8 @@ export default {
   order: 1,
   components: {
     draggable,
-    taskItem
+    taskItem,
+    roundKpi
   },
   data() {
     return {
@@ -110,25 +128,32 @@ export default {
       {
         listTitle: "Tareas Delegadas",
         listItems: [
-          { name: "Quinta Tarea", _id: 5, completed: true },
-          { name: "Sexta Tarea", _id: 6, completed: true },
-          { name: "Séptima Tarea", _id: 7, completed: false }
+          { name: "Quinta Tarea", _id: 5, completed: true, missionTags: [{missionName: "Ventas", displayColor: "#9F23B3"}] },
+          { name: "Sexta Tarea", _id: 6, completed: true, missionTags: [{missionName: "Servicio a Cliente", displayColor: "#8B71DC"}]},
+          { name: "Séptima Tarea", _id: 7, completed: false, missionTags: [{missionName: "Comunicación Interna", displayColor: "#2388B3"}]}
         ]
       }],
       kpiList: [
-          { name: "Primer KPI", id: 1, value: 58 },
-          { name: "Segundo KPI", id: 2, value: 90 },
-          { name: "Tercer KPI", id: 3, value: 30 }
+          { name: "Ventas", id: 1, value: 58, displayColor: "#9F23B3" },
+          { name: "Servicio a Cliente", id: 2, value: 90, displayColor: "#8B71DC" },
+          { name: "Comunicación Interna", id: 3, value: 30, displayColor: "#2388B3" }
         
       ]
     };
   },
   mounted() {
     this.getMyTasks()
+    this.getDelegatedTasks()
+    // this.getMissionStats()
   },
   computed: {
     updateMyTasks() {
       this.getMyTasks()
+      // this.getMissionStats()
+    },
+    updateDelegatedTasks() {
+      this.getDelegatedTasks()
+      // this.getMissionStats()
     }
   },
   methods: {
@@ -200,6 +225,63 @@ export default {
             "Lo sentimos, hubo un problema al traer tu lista de tareas. Inténtalo más tarde", err
           );
         });
+    },
+    getDelegatedTasks() {
+      // Get my tasks from myTasks route, then render them to
+      // this.allLists[0].listItems[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      const url = "http://localhost:3000/"+currentUser+"/myTasksDelegated"
+      axios
+        .get(url)
+        .then(res => {
+          this.allLists[1].listItems = res.data
+          console.log("Delegated Tasks List",this.allLists[1].listItems)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer tu lista de tareas. Inténtalo más tarde", err
+          );
+        });
+    },
+    getMyMissions() {
+      // Get my tasks from myTasks route, then render them to
+      // this.kpiList[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      const url = "http://localhost:3000/"+currentUser+"/myMissions"
+      axios
+        .get(url)
+        .then(res => {
+          this.this.kpiList = res.data
+          console.log("My Mission List",this.kpiList)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer tus misiones. Inténtalo más tarde", err
+          );
+        });
+    },
+    getMissionStats() {
+      // Get my tasks from myTasks route, then render them to
+      // this.kpiList[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      const url = "http://localhost:3000/"+currentUser+"/myMissionStats"
+      axios
+        .get(url)
+        .then(res => {
+          this.this.kpiList = res.data
+          console.log("My Mission List",this.kpiList)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer el resumen de tus misiones. Inténtalo más tarde", err
+          );
+        });
     }
   }
 };
@@ -208,7 +290,7 @@ export default {
 <style scoped lang="scss">
 
 .dark-color {
-  background-color: black;
+  background-color: #424242;
   color: whitesmoke;
 }
 
