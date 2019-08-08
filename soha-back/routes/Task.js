@@ -8,6 +8,8 @@ router.get('/:id/myTasks', ( req,res,next ) => {
     let { id } = req.params;
     Task.find( { $or: [ { createdBy:id}, { assignedTo:id } ] })
     .populate('missionTags', 'missionName displayColor')
+    .populate('assignedTo', 'username profilePic')
+    .populate('createdBy', 'username profilePic')
     .then(data => 
         res.status(200).json(data))
     .catch(err => console.log(err))
@@ -22,6 +24,8 @@ router.get('/:id/myTasksDelegated', ( req,res,next ) => {
         { assignedTo: { $not: { $regex: id } } },
         { assignedTo: { $exists: true, $ne: [] } }
     ] })
+    .populate('missionTags', 'missionName displayColor')
+    .populate('assignedTo', 'username profilePic')
     .then(data => 
         res.status(200).json(data))
     .catch(err => console.log(err))
