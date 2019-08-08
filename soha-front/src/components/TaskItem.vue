@@ -39,6 +39,10 @@
           </v-list>
         </v-menu>
 
+        <v-list-item-avatar v-if="delegated&&!allowEdit">
+          <v-img :src="avatar"></v-img>
+        </v-list-item-avatar>
+
         <v-speed-dial
         right
         direction="right"
@@ -78,22 +82,29 @@ export default {
     completed: Boolean,
     allowEdit: Boolean,
     taskId: String,
-    missionTags: Array
+    missionTags: Array,
+    delegated: Boolean,
+    assignedTo: Array
   },
   data() {
     return {
       editMode: false,
       tag: {icon: 'bookmark', color: 'blue'},
-      missions: []
+      missions: [],
+      avatar: ''
     }
   },
   mounted() {
     this.renderMissionTag()
     this.getMyMissions()
+    this.renderAvatar()
   },
   computed: {
     updateColor() {
       this.renderMissionTag()
+    },
+    updateAvatar() {
+      this.renderAvatar()
     },
     udpdateAvailableMissions() {
       this.getMyMissions()
@@ -171,6 +182,14 @@ export default {
       } else {
         this.tag.color = this.missionTags[0].displayColor
         this.tag.icon = 'bookmark'
+      }
+
+    },
+    renderAvatar() {
+      if ( this.assignedTo === null || this.assignedTo.length === 0 ){
+        this.avatar = ''
+      } else {
+        this.avatar = this.assignedTo[0].profilePic
       }
 
     },
