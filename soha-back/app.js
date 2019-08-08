@@ -9,17 +9,16 @@ const MongoStore    = require("connect-mongo")(session);
 const cors          = require('cors')
 const logger        = require('morgan');
 const path          = require('path');
-const app           = express();
+const app           = require('express')();
 
-
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-
-http.listen(3001, function(){
-  console.log('listening on *:3001');
+const server        = app.listen(3001, function() {
+  console.log('server running on port 3001');
 });
 
 
+const io = require('socket.io')(server);
+
+  
 //ROUTES
 const auth           = require('./routes/auth');
 const task           = require('./routes/Task')
@@ -75,28 +74,21 @@ app.use(session({
     })
     }));
 
-
-
-    
-
-    app.get('/', function(req, res){
-      res.sendFile(__dirname + '/index.html');
-    });
-
-    io.on('connection', function(socket){
-      console.log('a user connected');
+//SOCKETS
+    io.on('connection', socket => {
+      console.log('user connected, id:', socket.id)
       socket.on('disconnect', function(){
-        console.log('user disconnected');
+      console.log('user disconnected, id', socket.id);
       });
     });
 
-    io.on('connection', function(socket){
-      socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
+    io.on('connection', socket => {
+      socket.on('SEND_HI', function(data){
+      console.log(socket.id)
+      io.emit('HI', data)        
       });
+ 
     });
-
-
 
 
 
@@ -111,16 +103,4 @@ app.use("/", task)
 app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuchas?
   console.log(`server on PORT: ${app.get("PORT")}`);
 });
-
-
-
-
-/// QUE SOLO SEA UN PUERTO 
-
-/// QUE SEA PARA VUE
-
-/// QUE SE ACTUALIZE LA BDD y que solo sea a ciertos usuarios.
-
-/// Tambien ya nesecito que sea privado. 
-
 
