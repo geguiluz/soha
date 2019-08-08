@@ -243,32 +243,32 @@ export default {
     // }
     // ,
 
-           
-            const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-            axios
-              .post("http://localhost:3000/"+currentUser+"/addTask", {
-                name: this.allLists[0].newTask, 
-                completed: false 
-              })
-              .then(res => {
-                this.allLists[0].addTaskFlg = false 
-                // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
-                // Push task to the beginning of task array
-                this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, id: this.allLists[0].length, completed: false})
-                this.allLists[0].newTask = ''
-                res.preventDefault(
-                  this.socket.emit('SEND_HI', {
-                    saludo: res
-                  })
-                )
-              })
-              .catch(err => {
-                alert(
-                  "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
-                );
-              });
-              
+      axios
+        .post("http://localhost:3000/"+currentUser+"/addTask", {
+           name: this.allLists[0].newTask, 
+           completed: false 
+        })
+        .then(res => {
+          let newTaskItem = res.data
+          console.log(newTaskItem)
+          this.allLists[0].addTaskFlg = false 
+          // console.log('Toggling addTaskFlg', this.allLists[0].addTaskFlg)
+          // Push task to the beginning of task array
+          this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, _id: newTaskItem._id, completed: false})
+          this.allLists[0].newTask = ''
+          res.preventDefault(
+          this.socket.emit('SEND_HI', {
+            saludo: res
+           })
+          )
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
+          );
+        });
+
     },
     getMyTasks() {
       // Get my tasks from myTasks route, then render them to
