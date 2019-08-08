@@ -34,7 +34,7 @@
           <v-list>
             <v-list-item :id="element._id" v-for="(element) in missions" 
                     :key="element._id" >
-              <v-chip :color="element.displayColor" dark @click="changeMission"> {{ element.missionName }}</v-chip>
+              <v-chip :color="element.displayColor" dark @click="changeMission(element._id, element.displayColor)"> {{ element.missionName }}</v-chip>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -139,34 +139,35 @@ export default {
       // TODO: Usar splice para eliminar el índice en específico
       // Creo que necesito invocar el método del componente padre
     },
-    changeMission() {
+    changeMission(missionId, newColor) {
         console.log("Changing Mission")
         // Clear all missions
         // TODO: Read user ID off the current session
         const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-        const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/clearMissions"
-        console.log(url)
-        axios
-          .delete(url)
-          .then(res => {
-            console.log("Clearing all missions")
-          })
-          .catch(err => {
-            alert(
-              "Lo sentimos, hubo un problema al modificar la misión (eliminar). Inténtalo más tarde", err
-            );
-        });
+        // const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/clearMissions"
+        // console.log(url)
+        // axios
+        //   .delete(url)
+        //   .then(res => {
+        //     console.log("Clearing all missions")
+        //   })
+        //   .catch(err => {
+        //     alert(
+        //       "Lo sentimos, hubo un problema al modificar la misión (eliminar). Inténtalo más tarde", err
+        //     );
+        // });
 
         const secondUrl = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/assignMission"
         console.log(secondUrl)
         axios
           .put(secondUrl, {
-            missionTags: this.missionTags 
+            missionId: missionId 
           })
           .then(res => {
-            this.missions = res.data
-            console.log("Updating mission",this.missions)
+            this.missionTags = res.data
+            this.tag.color = newColor
+            this.tag.icon = 'bookmark'
           })
           .catch(err => {
             alert(
