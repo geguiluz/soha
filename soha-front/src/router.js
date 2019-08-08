@@ -46,6 +46,14 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './components/TaskItem.vue')
     },
     {
+      path: '/roundKpi',
+      name: 'RoundKpi',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './components/RoundKpi.vue')
+    },
+    {
       path: '/taskList',
       name: 'TaskList',
       // route level code-splitting

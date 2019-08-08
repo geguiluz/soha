@@ -17,7 +17,11 @@ const taskSchema = new Schema({
     dueDate:      Date,
     startedDate:  Date,
     finishedDate: Date,
-    comments:     String
+    comments:     String,
+    missionTags:   [{
+        type: Schema.Types.ObjectId,
+        ref: 'MissionTags'
+    }],
 },{
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });

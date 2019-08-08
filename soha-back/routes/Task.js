@@ -1,21 +1,27 @@
 const express = require("express");
 const Task    = require("../models/Task");
+const MissionTag = require("../models/MissionTags");
 const router  = express.Router();
 
-//TODAS LAS TAREAS QUE CREASTE Y QUE TE ASIGNARON.
+//TODAS LAS TAREAS QUE CREASTE O QUE TE ASIGNARON.
 router.get('/:id/myTasks', ( req,res,next ) => {
     let { id } = req.params;
     Task.find( { $or: [ { createdBy:id}, { assignedTo:id } ] })
+    .populate('missionTags', 'missionName displayColor')
     .then(data => 
         res.status(200).json(data))
     .catch(err => console.log(err))
 })
 
 
-//SOLO TAREAS CREADAS POR EL USUARIO
+//SOLO TAREAS CREADAS POR EL USUARIO Y QUE FUERON ASIGNADAS A ALGUIEN MÁS
 router.get('/:id/myTasksDelegated', ( req,res,next ) => {
     let { id } = req.params;
-    Task.find({ createdBy:id })
+    Task.find({ $and: [
+        { createdBy:id },
+        { assignedTo: { $not: {$regex: id } } },
+        { assignedTo: { $exists: true, $ne: [] } }
+    ] })
     .then(data => 
         res.status(200).json(data))
     .catch(err => console.log(err))
@@ -51,7 +57,7 @@ router.post('/:id/addTask', (req, res) => {
 
 
 //CAMBIAS EL ESTADO DE UNA TAREA (TRUE O FLASE). 
-router.put('/:id/:idTask', (req, res) => {
+router.put('/:id/:idTask/updateCompleteFlag', (req, res) => {
     const {idTask}  = req.params
     const {completed} = req.body 
   
@@ -62,7 +68,7 @@ router.put('/:id/:idTask', (req, res) => {
     })
 
 //BORRAS LAS TAREAS.
-router.delete('/:id/:idTask/delete', (req, res) => {
+router.delete('/:id/:idTask/deleteTask', (req, res) => {
     const {idTask, id} = req.params
     Task.findByIdAndDelete({_id: idTask})
         .then( data => {
@@ -72,7 +78,7 @@ router.delete('/:id/:idTask/delete', (req, res) => {
 })
 
 // CAMBIAR EL NOMBRE DE LA TASK.
-router.put('/:id/:idTask/changeNameTask', (req, res) => {
+router.put('/:id/:idTask/changeTaskName', (req, res) => {
     const {idTask} = req.params
     const {name}   = req.body
 
@@ -89,10 +95,76 @@ router.put('/:id/:idTask/changeNameTask', (req, res) => {
 
 // AGREGAS Y CAMBIAS LA INFO DE LA TASK, TAMBIEN EL NOMBRE.
 
+// MISIONES
 
+// CREAR NUEVAS MISIONES
+router.post("/:id/addMission", (req, res) =>{
+    const {id}       = req.params;
+    const { missionName, company, displayColor } = req.body;
 
+    const newMission = new MissionTag({ createdBy:id, missionName, company, displayColor })
 
+    newMission.save()
+    .then(data => {
+        res.json(data)
+    })
+    .catch(err => console.log(err));
+})
 
+// ASIGNAR TAGS DE MISIÓN A UNA TASK
+router.put("/:id/:idTask/assignMission", (req, res) =>{
+    const missionId  = req.body.missionId
+    const {idTask} = req.params
+
+    Task.findByIdAndUpdate({_id: idTask}, { missionTags:missionId }, {new: true})
+    .then((task) =>{
+            res.json(task)  
+        }).catch(err => res.status(400).json(err));
+})
+
+// BORRAR LOS TAGS DE MISIÓN DE UNA TASK
+router.delete("/:id/:idTask/clearMissions", (req, res) =>{
+    const missionId  = req.body.missionId
+    const {idTask} = req.params
+
+    // TODO: Find out how to remove all missions
+    console.log('Removing all missions from task', idTask)
+    // Task.findByIdAndUpdate({_id: idTask}, { missionTags:missionId }, {new: true})
+    // .then((task) =>{
+    //         res.json(task)  
+    //     }).catch(err => res.status(400).json(err));
+})
+
+// MOSTRAR TODAS LAS MISIONES DEL USUARIO (Por ahora va a mostrar todas las que
+// existen en la BD)
+// TODO: Asociar misiones a la compañía a la que pertenece el usuario
+router.get('/:id/myMissions', ( req,res,next ) => {
+    let { id } = req.params;
+    MissionTag.find()
+    .then(data => 
+        res.status(200).json(data))
+    .catch(err => console.log(err))
+})
+
+// MOSTRAR EL RESUMEN DE LAS MISIONES (CUÁNTAS TASKS EXISTEN PARA CADA MISIÓN Y
+// CUÁNTAS DE ELLAS ESTÁN MARCADAS COMO COMPLETADAS)
+
+// router.get('/:id/myMissionStats', ( req,res,next ) => {
+//     let { id } = req.params;
+//     let followers_count = 30;
+//     Task.aggregate([
+//         { "$match": { "_id": id } },
+//         {
+//           "$count": {"_id": "$_id"}  
+//         },
+//         {
+//             "$sort": {missionName: 1}
+//         }
+//     ])
+//     .then(data => 
+//         res.status(200).json(data))
+//     .catch(err => console.log(err))
+// })
 
 module.exports = router;
 
