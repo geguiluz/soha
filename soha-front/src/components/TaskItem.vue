@@ -34,7 +34,7 @@
           <v-list>
             <v-list-item :id="element._id" v-for="(element) in missions" 
                     :key="element._id" >
-              <v-chip :color="element.displayColor" dark> {{ element.missionName }}</v-chip>
+              <v-chip :color="element.displayColor" dark @click="changeMission"> {{ element.missionName }}</v-chip>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -129,7 +129,39 @@ export default {
       // Creo que necesito invocar el método del componente padre
     },
     changeMission() {
-      
+        console.log("Changing Mission")
+        // Clear all missions
+        // TODO: Read user ID off the current session
+        const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+        const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/clearMissions"
+        console.log(url)
+        axios
+          .delete(url)
+          .then(res => {
+            console.log("Clearing all missions")
+          })
+          .catch(err => {
+            alert(
+              "Lo sentimos, hubo un problema al modificar la misión (eliminar). Inténtalo más tarde", err
+            );
+        });
+
+        const secondUrl = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/assignMission"
+        console.log(secondUrl)
+        axios
+          .put(secondUrl, {
+            missionTags: this.missionTags 
+          })
+          .then(res => {
+            this.missions = res.data
+            console.log("Updating mission",this.missions)
+          })
+          .catch(err => {
+            alert(
+              "Lo sentimos, hubo un problema al modificar la misión (reasignar). Inténtalo más tarde", err
+            );
+        });
 
     },
     renderMissionTag() {
@@ -153,7 +185,7 @@ export default {
         .get(url)
         .then(res => {
           this.missions = res.data
-          console.log("My Mission List",this.missions)
+          // console.log("My Mission List",this.missions)
         })
         .catch(err => {
           alert(

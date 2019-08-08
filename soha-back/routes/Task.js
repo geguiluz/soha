@@ -120,7 +120,20 @@ router.put("/:id/:idTask/assignMission", (req, res) =>{
     .then((task) =>{
             res.json(task)  
         }).catch(err => res.status(400).json(err));
-    })
+})
+
+// BORRAR LOS TAGS DE MISIÓN DE UNA TASK
+router.delete("/:id/:idTask/clearMissions", (req, res) =>{
+    const missionId  = req.body.missionId
+    const {idTask} = req.params
+
+    // TODO: Find out how to remove all missions
+    console.log('Removing all missions from task', idTask)
+    // Task.findByIdAndUpdate({_id: idTask}, { missionTags:missionId }, {new: true})
+    // .then((task) =>{
+    //         res.json(task)  
+    //     }).catch(err => res.status(400).json(err));
+})
 
 // MOSTRAR TODAS LAS MISIONES DEL USUARIO (Por ahora va a mostrar todas las que
 // existen en la BD)
