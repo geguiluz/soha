@@ -14,16 +14,30 @@
           background-color="rgba(0, 0, 0, 0)"
         >
         </v-text-field>
-
-          <v-btn
+          <v-menu
+            bottom
+            offset-y
+          >
+          <template v-slot:activator="{ on }">
+            <v-btn
               icon
               small
-          >
-            <!-- :color="missionTags[0].displayColor" -->
-            <v-icon
-            :color="tag.color"
-            >{{ tag.icon }}</v-icon>
-          </v-btn>
+              v-on="on"
+            >
+              <v-icon
+              :color="tag.color"
+              >
+              {{ tag.icon }}
+              </v-icon>
+             </v-btn>
+          </template>
+          <v-list>
+            <v-list-item :id="element._id" v-for="(element) in missions" 
+                    :key="element._id" >
+              <v-chip :color="element.displayColor" dark> {{ element.missionName }}</v-chip>
+            </v-list-item>
+          </v-list>
+        </v-menu>
 
         <v-speed-dial
         right
@@ -69,15 +83,20 @@ export default {
   data() {
     return {
       editMode: false,
-      tag: {icon: 'bookmark', color: 'blue'}
+      tag: {icon: 'bookmark', color: 'blue'},
+      missions: []
     }
   },
   mounted() {
     this.renderMissionTag()
+    this.getMyMissions()
   },
   computed: {
     updateColor() {
       this.renderMissionTag()
+    },
+    udpdateAvailableMissions() {
+      this.getMyMissions()
     }
   },
   methods: {
@@ -122,7 +141,26 @@ export default {
         this.tag.icon = 'bookmark'
       }
 
-    }
+    },
+    getMyMissions() {
+      // Get my tasks from myTasks route, then render them to
+      // this.kpiList[]
+      // TODO: Read user ID off the current session
+      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+      const url = "http://localhost:3000/"+currentUser+"/myMissions"
+      axios
+        .get(url)
+        .then(res => {
+          this.missions = res.data
+          console.log("My Mission List",this.missions)
+        })
+        .catch(err => {
+          alert(
+            "Lo sentimos, hubo un problema al traer tus misiones. Inténtalo más tarde", err
+          );
+        });
+    },
   }
 }
 </script>
