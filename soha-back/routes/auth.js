@@ -8,10 +8,6 @@ const User    = require('../models/User');
 const bcryptSalt = 10;
 
 
-
-
-//AGREGAS LA INFORMACION DEL USUARIO. 
-
 //ESTA RUTA TE REGRESA TODOS LOS USUARIOS.
 router.get('/userView', ( req,res) => {
     User.find().then(data => res.status(200).json(data))
