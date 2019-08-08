@@ -37,8 +37,7 @@
             name="newTask" 
             type="text" 
             v-model="allLists[0].newTask"
-            @keyup.enter="saveTask"
-          
+            @keyup.enter="saveTask"    
             @keydown="sendHi"
        
             :autofocus="allLists[0].addTaskFlg"
