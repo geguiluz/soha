@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout row wrap align-center class="task-row">
-      <v-checkbox hide-details class="shrink ml-2 mt-0" v-model="completed" @change="updateCompletedFlag(!completed)"></v-checkbox>
+      <v-checkbox hide-details class="shrink ml-2 mt-0" v-model="completedMutable" @change="updateCompletedFlag()"></v-checkbox>
         <v-text-field
           name="taskName" 
           type="text" 
@@ -98,13 +98,17 @@ export default {
       editMode: false,
       tag: {icon: 'bookmark', color: 'blue'},
       // missionList: [],
-      avatar: ''
+      avatar: '',
+      completedMutable: false,
+      tagsMutable: []
     }
   },
   mounted() {
+    this.tagsMutable = this.missionTags
     this.renderMissionTag()
     // this.getMyMissions()
     this.renderAvatar()
+    this.completedMutable = this.completed
   },
   computed: {
     updateColor() {
@@ -155,11 +159,11 @@ export default {
         console.log(url)
         axios
           .put(url, {
-            completed: this.completed 
+            completed: this.completedMutable 
           })
           .then(res => {
-            this.completed = res.data.completed
-            console.log('New value for flag is', this.completed)
+            this.completed = res.data.completedMutable
+            console.log('New value for flag is', this.completedMutable)
             this.updateDashboard('Flag Change')
           })
           .catch(err => {
@@ -193,11 +197,11 @@ export default {
 
     },
     renderMissionTag() {
-      if ( this.missionTags === null || this.missionTags.length === 0 ){
+      if ( this.tagsMutable === null || this.tagsMutable.length === 0 ){
         this.tag.color = ''
         this.tag.icon = 'mdi-bookmark-outline'
       } else {
-        this.tag.color = this.missionTags[0].displayColor
+        this.tag.color = this.tagsMutable[0].displayColor
         this.tag.icon = 'bookmark'
       }
 

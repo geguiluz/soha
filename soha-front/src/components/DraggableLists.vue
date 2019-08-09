@@ -155,16 +155,16 @@ export default {
     this.getMyTasks()
     this.getDelegatedTasks()
     this.getMyMissions()
-    this.getMissionStats()
+    // this.getMissionStats()
   },
   computed: {
     updateMyTasks() {
       this.getMyTasks()
-      this.getMissionStats()
+      // this.getMissionStats()
     },
     updateDelegatedTasks() {
       this.getDelegatedTasks()
-      this.getMissionStats()
+      // this.getMissionStats()
     },
     updateMyMissions() {
       this.getMyMissions()
@@ -298,11 +298,11 @@ export default {
     updateMissionStats() {
       console.log('Firing Dashboard update')
       // Ventas
-      this.kpiList[0].value ++
+      this.kpiList[0].value +=5
       // Servicio a cliente
-      this.kpiList[1].value ++
+      this.kpiList[1].value +=5
       // Comunicación
-      this.kpiList[2].value --
+      this.kpiList[2].value -=5
     }
     
   }
