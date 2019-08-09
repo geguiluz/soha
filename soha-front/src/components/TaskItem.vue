@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout row wrap align-center class="task-row">
-      <v-checkbox hide-details class="shrink ml-2 mt-0" v-model="completed" ></v-checkbox>
+      <v-checkbox hide-details class="shrink ml-2 mt-0" v-model="completed" @click="updateCompletedFlag(!completed)"></v-checkbox>
         <v-text-field
           name="taskName" 
           type="text" 
@@ -146,15 +146,36 @@ export default {
       // TODO: Usar splice para eliminar el índice en específico
       // Creo que necesito invocar el método del componente padre
     },
+    updateCompletedFlag(newValue) {
+      console.log("Changing complete flag")
+        // TODO: Read user ID off the current session
+        const currentUser = '5d46632ebfbbe11ab5f5e5f0'
+
+        const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/updateCompleteFlag"
+        console.log(url)
+        axios
+          .put(url, {
+            completed: newValue 
+          })
+          .then(res => {
+            this.completed = res.data.completed
+            console.log('New value for flag is', this.completed)
+          })
+          .catch(err => {
+            alert(
+              "Lo sentimos, hubo un problema al cambiar el estatus de completado. Inténtalo más tarde", err
+            );
+        });
+    },
     changeMission(missionId, newColor) {
         console.log("Changing Mission")
         // TODO: Read user ID off the current session
         const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-        const secondUrl = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/assignMission"
-        console.log(secondUrl)
+        const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/assignMission"
+        console.log(url)
         axios
-          .put(secondUrl, {
+          .put(url, {
             missionId: missionId 
           })
           .then(res => {
