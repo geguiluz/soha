@@ -155,7 +155,7 @@ export default {
     this.getMyTasks()
     this.getDelegatedTasks()
     this.getMyMissions()
-    // this.getMissionStats()
+    this.getMissionStats()
   },
   computed: {
     updateMyTasks() {
@@ -164,7 +164,7 @@ export default {
     },
     updateDelegatedTasks() {
       this.getDelegatedTasks()
-      // this.getMissionStats()
+      this.getMissionStats()
     },
     updateMyMissions() {
       this.getMyMissions()
