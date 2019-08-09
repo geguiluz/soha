@@ -1,7 +1,11 @@
-const express = require("express");
-const Task    = require("../models/Task");
-const MissionTag = require("../models/MissionTags");
-const router  = express.Router();
+const express     = require("express");
+const Task        = require("../models/Task");
+const MissionTag  = require("../models/MissionTags");
+const router      = express.Router();
+const app         = express();
+var http          = require('http').createServer(app);
+var io            = require('socket.io')(http);
+app.io = io;
 
 //TODAS LAS TAREAS QUE CREASTE O QUE TE ASIGNARON.
 router.get('/:id/myTasks', ( req,res,next ) => {
@@ -37,9 +41,19 @@ router.put("/:id/:idTask/assignUser", (req, res) =>{
     const {idTask} = req.params
 
     Task.findByIdAndUpdate({_id: idTask}, {assignedTo:assign}, {new: true})
+    
     .then((task) =>{
-            res.json(task)  
-        }).catch(err => res.status(400).json(err));
+        // res.app.io.emit(console.log("lo que sea"))
+        res.json(task)  
+            // task.preventDefault(
+            //     socket.emit('SEND_HI', {
+            //       saludo: Task
+            //      })
+            //     )
+           
+        })
+        
+        .catch(err => res.status(400).json(err));
     })
 
 // AGREGAS LA TAREA

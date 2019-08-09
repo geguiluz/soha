@@ -184,6 +184,14 @@ export default {
     }
   },
   methods: {
+    socketFunc (res){
+
+        res.preventDefault(
+          this.socket.emit('SEND_HI', {
+            saludo: res
+           })
+          )
+    },
     log: function(evt) {
       window.console.log(evt);
     },
@@ -236,11 +244,7 @@ export default {
           // Push task to the beginning of task array
           this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, _id: newTaskItem._id, completed: false})
           this.allLists[0].newTask = ''
-          res.preventDefault(
-          this.socket.emit('SEND_HI', {
-            saludo: res
-           })
-          )
+          this.socketFunc (res)
         })
         .catch(err => {
           console.log(

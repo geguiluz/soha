@@ -84,8 +84,7 @@ app.use(session({
 
     io.on('connection', function(socket){
       socket.on('SEND_HI', function(data){
-        console.log(data)
-        io.emit('HI', data);
+        io.emit('HI', data)
       });
     });
 
