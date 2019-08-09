@@ -168,7 +168,9 @@ export default {
     
     //SOCKETS, ESTE RECIBE
     this.socket.on('HI', (data) => {
-            console.log(data)
+      console.log(data)
+      this.getMyTasks()
+
         });
   },
   computed: {
@@ -239,10 +241,9 @@ export default {
             saludo: res
            })
           )
-          
         })
         .catch(err => {
-          alert(
+          console.log(
             "Lo sentimos, no se pudo agregar la nueva tarea, favor de intentar más tarde.", err
           );
         });
@@ -264,6 +265,7 @@ export default {
           alert(
             "Lo sentimos, hubo un problema al traer tu lista de tareas. Inténtalo más tarde", err
           );
+
         });
     },
     getDelegatedTasks() {
