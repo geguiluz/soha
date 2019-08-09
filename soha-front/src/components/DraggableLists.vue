@@ -40,6 +40,7 @@
                     :allowEdit="allLists[0].allowEdit" 
                     :taskId="element._id"
                     :missionTags="element.missionTags"
+                    :allMissions="allMissions"
                     :delegated="false"
                     :assignedTo="element.assignedTo"
                     >
@@ -80,6 +81,7 @@
                     :allowEdit="allLists[1].allowEdit" 
                     :taskId="element._id"
                     :missionTags="element.missionTags"
+                    :allMissions="allMissions"
                     :delegated="true"
                     :assignedTo="element.assignedTo"
                     >
@@ -123,6 +125,7 @@ export default {
   },
   data() {
     return {
+      allMissions: [],
       allLists: [{
         listTitle: "Mis Tareas",
         addTaskFlg: false,
@@ -149,6 +152,7 @@ export default {
   mounted() {
     this.getMyTasks()
     this.getDelegatedTasks()
+    this.getMyMissions()
     // this.getMissionStats()
   },
   computed: {
@@ -159,6 +163,9 @@ export default {
     updateDelegatedTasks() {
       this.getDelegatedTasks()
       // this.getMissionStats()
+    },
+    updateMyMissions() {
+      this.getMyMissions()
     }
   },
   methods: {
@@ -269,8 +276,8 @@ export default {
       axios
         .get(url)
         .then(res => {
-          this.this.kpiList = res.data
-          console.log("My Mission List",this.kpiList)
+          this.allMissions = res.data
+          console.log("My Mission List",this.allMissions)
         })
         .catch(err => {
           alert(
