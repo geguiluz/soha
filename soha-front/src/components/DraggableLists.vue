@@ -234,7 +234,9 @@ export default {
       // TODO: Read user ID off the current session
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-      const url = "http://localhost:3000/"+currentUser+"/myTasks"
+      const url = `${process.env.URL}/currentUser/myTasks`
+
+      console.log("process env url",url)
       axios
         .get(url)
         .then(res => {
