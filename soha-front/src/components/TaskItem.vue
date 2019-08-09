@@ -38,7 +38,7 @@
                   Quitar Misión 
                 </v-chip>
             </v-list-item>
-            <v-list-item :id="element._id" v-for="(element) in missionList" 
+            <v-list-item :id="element._id" v-for="(element) in allMissions" 
                     :key="element._id" >
               <v-chip :color="element.displayColor" dark @click="changeMission(element._id, element.displayColor)" > {{ element.missionName }}</v-chip>
             </v-list-item>
@@ -90,19 +90,20 @@ export default {
     taskId: String,
     missionTags: Array,
     delegated: Boolean,
-    assignedTo: Array
+    assignedTo: Array,
+    allMissions: Array
   },
   data() {
     return {
       editMode: false,
       tag: {icon: 'bookmark', color: 'blue'},
-      missionList: [],
+      // missionList: [],
       avatar: ''
     }
   },
   mounted() {
     this.renderMissionTag()
-    this.getMyMissions()
+    // this.getMyMissions()
     this.renderAvatar()
   },
   computed: {
@@ -113,7 +114,7 @@ export default {
       this.renderAvatar()
     },
     udpdateAvailableMissions() {
-      this.getMyMissions()
+      // this.getMyMissions()
     }
   },
   methods: {
@@ -185,26 +186,7 @@ export default {
         this.avatar = this.assignedTo[0].profilePic
       }
 
-    },
-    getMyMissions() {
-      // Get my tasks from myTasks route, then render them to
-      // this.kpiList[]
-      // TODO: Read user ID off the current session
-      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
-
-      const url = "http://localhost:3000/"+currentUser+"/myMissions"
-      axios
-        .get(url)
-        .then(res => {
-          this.missionList = res.data
-          // console.log("My Mission List",this.missionList)
-        })
-        .catch(err => {
-          alert(
-            "Lo sentimos, hubo un problema al traer tus misiones. Inténtalo más tarde", err
-          );
-        });
-    },
+    }
   }
 }
 </script>

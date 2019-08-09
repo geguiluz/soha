@@ -51,6 +51,7 @@
                     :allowEdit="allLists[0].allowEdit" 
                     :taskId="element._id"
                     :missionTags="element.missionTags"
+                    :allMissions="allMissions"
                     :delegated="false"
                     :assignedTo="element.assignedTo"
                     >
@@ -91,6 +92,7 @@
                     :allowEdit="allLists[1].allowEdit" 
                     :taskId="element._id"
                     :missionTags="element.missionTags"
+                    :allMissions="allMissions"
                     :delegated="true"
                     :assignedTo="element.assignedTo"
                     >
@@ -138,6 +140,7 @@ export default {
       //SOCKETS
       socket: io('localhost:3001'),
       saludo: 'Hi!',
+      allMissions: [],
       allLists: [{
         listTitle: "Mis Tareas",
         addTaskFlg: false,
@@ -164,6 +167,7 @@ export default {
   mounted() {
     this.getMyTasks()
     this.getDelegatedTasks()
+    this.getMyMissions()
     // this.getMissionStats()
     
     //SOCKETS, ESTE RECIBE
@@ -181,6 +185,9 @@ export default {
     updateDelegatedTasks() {
       this.getDelegatedTasks()
       // this.getMissionStats()
+    },
+    updateMyMissions() {
+      this.getMyMissions()
     }
   },
   methods: {
@@ -258,7 +265,9 @@ export default {
       // TODO: Read user ID off the current session
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-      const url = "http://localhost:3000/"+currentUser+"/myTasks"
+      const url = `${process.env.URL}/currentUser/myTasks`
+
+      console.log("process env url",url)
       axios
         .get(url)
         .then(res => {
@@ -301,8 +310,8 @@ export default {
       axios
         .get(url)
         .then(res => {
-          this.this.kpiList = res.data
-          console.log("My Mission List",this.kpiList)
+          this.allMissions = res.data
+          console.log("My Mission List",this.allMissions)
         })
         .catch(err => {
           alert(
