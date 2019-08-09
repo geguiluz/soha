@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout row wrap align-center class="task-row">
-      <v-checkbox hide-details class="shrink ml-2 mt-0" v-model="completed" @click="updateCompletedFlag(!completed)"></v-checkbox>
+      <v-checkbox hide-details class="shrink ml-2 mt-0" v-model="completed" @change="updateCompletedFlag(!completed)"></v-checkbox>
         <v-text-field
           name="taskName" 
           type="text" 
@@ -146,7 +146,7 @@ export default {
       // TODO: Usar splice para eliminar el índice en específico
       // Creo que necesito invocar el método del componente padre
     },
-    updateCompletedFlag(newValue) {
+    updateCompletedFlag() {
       console.log("Changing complete flag")
         // TODO: Read user ID off the current session
         const currentUser = '5d46632ebfbbe11ab5f5e5f0'
@@ -155,11 +155,12 @@ export default {
         console.log(url)
         axios
           .put(url, {
-            completed: newValue 
+            completed: this.completed 
           })
           .then(res => {
             this.completed = res.data.completed
             console.log('New value for flag is', this.completed)
+            this.updateDashboard('Flag Change')
           })
           .catch(err => {
             alert(
@@ -182,6 +183,7 @@ export default {
             this.missionTags = res.data
             this.tag.color = newColor
             this.tag.icon = 'bookmark'
+            this.updateDashboard('Mission Change')
           })
           .catch(err => {
             alert(
@@ -207,16 +209,35 @@ export default {
         this.avatar = this.assignedTo[0].profilePic
       }
 
+    },
+    updateDashboard(origin) {
+      // let outputObject = { missionId: this.missionTags._id, completed: this.completed }
+      this.$emit('valueChange', 'whatever')
+      console.log('Testing method from', origin)
     }
   }
 }
 </script>
 <style scoped lang="scss">
-    .task-row {
-        padding: 0;
-        cursor: move;
-        &:hover {
-            background: lightgrey;
-        }
+.task-row {
+    padding: 0;
+    cursor: move;
+    &:hover {
+        background: lightgrey;
     }
+}
+
+// TODO: Preguntarle a Chan cómo cambiar esto
+.theme--light.v-input--is-disabled .v-label, .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
+    color: #424242 !important;
+    // color: red !important;
+}
+input {
+    color: #424242 !important;
+    // color: red !important;
+}
+textarea {
+    color: #424242 !important;
+    // color: red !important;
+}
 </style>

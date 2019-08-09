@@ -43,6 +43,7 @@
                     :allMissions="allMissions"
                     :delegated="false"
                     :assignedTo="element.assignedTo"
+                    @valueChange="updateMissionStats"
                     >
                     </taskItem>
                   </transition-group>
@@ -84,6 +85,7 @@
                     :allMissions="allMissions"
                     :delegated="true"
                     :assignedTo="element.assignedTo"
+                    @valueChange="updateMissionStats"
                     >
                     </taskItem>
                   </transition-group>
@@ -153,16 +155,16 @@ export default {
     this.getMyTasks()
     this.getDelegatedTasks()
     this.getMyMissions()
-    // this.getMissionStats()
+    this.getMissionStats()
   },
   computed: {
     updateMyTasks() {
       this.getMyTasks()
-      // this.getMissionStats()
+      this.getMissionStats()
     },
     updateDelegatedTasks() {
       this.getDelegatedTasks()
-      // this.getMissionStats()
+      this.getMissionStats()
     },
     updateMyMissions() {
       this.getMyMissions()
@@ -286,24 +288,23 @@ export default {
         });
     },
     getMissionStats() {
-      // Get my tasks from myTasks route, then render them to
-      // this.kpiList[]
-      // TODO: Read user ID off the current session
-      const currentUser = '5d46632ebfbbe11ab5f5e5f0'
-
-      const url = "http://localhost:3000/"+currentUser+"/myMissionStats"
-      axios
-        .get(url)
-        .then(res => {
-          this.this.kpiList = res.data
-          console.log("My Mission List",this.kpiList)
-        })
-        .catch(err => {
-          alert(
-            "Lo sentimos, hubo un problema al traer el resumen de tus misiones. Inténtalo más tarde", err
-          );
-        });
+      // Ventas
+      this.kpiList[0].value = 44
+      // Servicio a cliente
+      this.kpiList[1].value = 55
+      // Comunicación
+      this.kpiList[2].value = 66
+    },
+    updateMissionStats() {
+      console.log('Firing Dashboard update')
+      // Ventas
+      this.kpiList[0].value ++
+      // Servicio a cliente
+      this.kpiList[1].value ++
+      // Comunicación
+      this.kpiList[2].value --
     }
+    
   }
 };
 </script>
