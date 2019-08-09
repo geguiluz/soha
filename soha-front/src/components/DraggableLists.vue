@@ -12,6 +12,17 @@
             </v-btn> -->
             <v-btn class="mx-2" icon small @click="toggleEdition">
               <v-icon>edit</v-icon>
+              
+                <!-- Prueba de SOCKETS -->
+          <v-btn class="mx-2" fab small dark color="blue" @click="sendHi">
+            <v-icon dark>add</v-icon>
+          </v-btn>
+
+
+
+
+        <!-- Prueba de SOCKETS -->
+
             </v-btn>
             <v-btn class="mx-2" fab small dark color="green" @click="addTask">
               <v-icon dark>add</v-icon>
@@ -111,6 +122,7 @@ import draggable from 'vuedraggable';
 import axios from "axios";
 import taskItem from "../components/TaskItem";
 import roundKpi from "../components/RoundKpi";
+import io        from 'socket.io-client';
 
 export default {
   name: "DraggableLists",
@@ -123,6 +135,9 @@ export default {
   },
   data() {
     return {
+      //SOCKETS
+      socket: io('localhost:3001'),
+      saludo: 'Hi!',
       allLists: [{
         listTitle: "Mis Tareas",
         addTaskFlg: false,
@@ -150,6 +165,11 @@ export default {
     this.getMyTasks()
     this.getDelegatedTasks()
     // this.getMissionStats()
+    
+    //SOCKETS, ESTE RECIBE
+    this.socket.on('HI', (data) => {
+            console.log(data)
+        });
   },
   computed: {
     updateMyTasks() {
@@ -214,6 +234,12 @@ export default {
           // Push task to the beginning of task array
           this.allLists[0].listItems.unshift({name: this.allLists[0].newTask, _id: newTaskItem._id, completed: false})
           this.allLists[0].newTask = ''
+          res.preventDefault(
+          this.socket.emit('SEND_HI', {
+            saludo: res
+           })
+          )
+          
         })
         .catch(err => {
           alert(

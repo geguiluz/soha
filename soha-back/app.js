@@ -75,30 +75,19 @@ app.use(session({
     })
     }));
 
-
-
-    
-
-    app.get('/', function(req, res){
-      res.sendFile(__dirname + '/index.html');
-    });
-
     io.on('connection', function(socket){
-      console.log('a user connected');
+      console.log('a user connected, id:', socket.id);
       socket.on('disconnect', function(){
         console.log('user disconnected');
       });
     });
 
     io.on('connection', function(socket){
-      socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
+      socket.on('SEND_HI', function(data){
+        console.log(data)
+        io.emit('HI', data);
       });
     });
-
-
-
-
 
 //setings 
 app.set('PORT', 3000);
@@ -112,15 +101,5 @@ app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuc
   console.log(`server on PORT: ${app.get("PORT")}`);
 });
 
-
-
-
-/// QUE SOLO SEA UN PUERTO 
-
-/// QUE SEA PARA VUE
-
-/// QUE SE ACTUALIZE LA BDD y que solo sea a ciertos usuarios.
-
-/// Tambien ya nesecito que sea privado. 
 
 
