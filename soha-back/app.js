@@ -1,4 +1,6 @@
 // CONFIG
+require("dotenv").config();
+
 
 const bodyParser    = require('body-parser');
 const cookieParser  = require('cookie-parser');
@@ -12,11 +14,13 @@ const path          = require('path');
 const app           = express();
 
 
+
+
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-http.listen(3001, function(){
-  console.log('listening on *:3001');
+http.listen(process.env.PORT_SOCK, function(){
+  console.log(`listening on ${process.env.PORT_SOCK}`);
 });
 
 
@@ -89,15 +93,14 @@ app.use(session({
     });
 
 //setings 
-app.set('PORT', 3000);
 
 //Routes
 app.use("/", auth);
 app.use("/", task)
 
 
-app.listen(app.get("PORT"), () => {  //Donde lo estas ejecutando, donde lo escuchas?
-  console.log(`server on PORT: ${app.get("PORT")}`);
+app.listen(process.env.PORT, () => {  //Donde lo estas ejecutando, donde lo escuchas?
+  console.log(`server on PORT: ${process.env.PORT}`);
 });
 
 
