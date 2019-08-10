@@ -156,6 +156,7 @@ export default {
     this.getDelegatedTasks()
     this.getMyMissions()
     this.getMissionStats()
+    console.log('url', process.env.VUE_APP_URL)
   },
   computed: {
     updateMyTasks() {
@@ -210,8 +211,10 @@ export default {
       
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
+      const url = `${process.env.VUE_APP_URL}/${currentUser}/addTask`
+
       axios
-        .post("http://localhost:3000/"+currentUser+"/addTask", {
+        .post(url, {
            name: this.allLists[0].newTask, 
            completed: false 
         })
@@ -236,7 +239,7 @@ export default {
       // TODO: Read user ID off the current session
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-      const url = "http://localhost:3000/"+currentUser+"/myTasks"
+      const url = `${process.env.VUE_APP_URL}/${currentUser}/myTasks`
       axios
         .get(url)
         .then(res => {
@@ -255,7 +258,7 @@ export default {
       // TODO: Read user ID off the current session
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-      const url = "http://localhost:3000/"+currentUser+"/myTasksDelegated"
+      const url = `${process.env.VUE_APP_URL}/${currentUser}/myTasksDelegated`
       axios
         .get(url)
         .then(res => {
@@ -274,7 +277,8 @@ export default {
       // TODO: Read user ID off the current session
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-      const url = "http://localhost:3000/"+currentUser+"/myMissions"
+      const url = `${process.env.VUE_APP_URL}/${currentUser}/myMissions`
+
       axios
         .get(url)
         .then(res => {
