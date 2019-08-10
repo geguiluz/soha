@@ -67,7 +67,10 @@ export default {
     methods: {
         signupUser(){
           console.log('Signing up user', this.name, this.email, this.password);
-            fetch("http://localhost:3000/signup",{
+    
+          const url = `${process.env.VUE_APP_URL}/signup`
+
+            fetch(url,{
                 headers:{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'

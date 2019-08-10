@@ -57,7 +57,9 @@ export default {
     methods: {
         loginUser(){
           console.log('Logging in user', this.email, this.password);
-            fetch("http://localhost:3000/login",{
+          const url = `${process.env.VUE_APP_URL}/login`
+
+            fetch(url,{
                 headers:{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'

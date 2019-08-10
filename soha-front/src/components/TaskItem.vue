@@ -129,8 +129,10 @@ export default {
       // TODO: Read user ID off the current session
       const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
+      const url = `${process.env.VUE_APP_URL}/${currentUser}/${this.taskId}/changeTaskName`
+
       axios
-        .put("http://localhost:3000/"+currentUser+"/"+this.taskId+"/changeTaskName", {
+        .put(url, {
           name: this.taskname, 
           completed: this.completed 
         })
@@ -155,7 +157,8 @@ export default {
         // TODO: Read user ID off the current session
         const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-        const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/updateCompleteFlag"
+        const url = `${process.env.VUE_APP_URL}/${currentUser}/${this.taskId}/updateCompleteFlag`
+
         console.log(url)
         axios
           .put(url, {
@@ -177,8 +180,9 @@ export default {
         // TODO: Read user ID off the current session
         const currentUser = '5d46632ebfbbe11ab5f5e5f0'
 
-        const url = "http://localhost:3000/"+currentUser+"/"+this.taskId+"/assignMission"
-        console.log(url)
+        const url = `${process.env.VUE_APP_URL}/${currentUser}/${this.taskId}/assignMission`
+
+        // console.log(url)
         axios
           .put(url, {
             missionId: missionId 

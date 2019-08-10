@@ -88,7 +88,8 @@ export default {
   methods: {
         logOut(){
           console.log('Logging out');
-            fetch("http://localhost:3000/logout",{
+          const url = `${process.env.VUE_APP_URL}/logout`
+            fetch(url,{
                 headers:{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
